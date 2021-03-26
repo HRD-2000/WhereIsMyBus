@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "421967562926",
+    "firebase_url": "https://where-is-my-bus-d0a99.firebaseio.com",
+    "project_id": "where-is-my-bus-d0a99",
+    "storage_bucket": "where-is-my-bus-d0a99.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421967562926:android:374d38d7693e9769f3c53f",
+        "android_client_info": {
+          "package_name": "com.example.whereismybus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "421967562926-shl18q0pkv4dr15spour5ld6tsdkft3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTUAE0WbCZIIowL58Nx8bbqqyNq3bN9xw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "421967562926-shl18q0pkv4dr15spour5ld6tsdkft3n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
