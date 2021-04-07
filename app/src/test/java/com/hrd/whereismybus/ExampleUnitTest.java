@@ -1,4 +1,4 @@
-package com.example.whereismybus;
+package com.hrd.whereismybus;
 
 import org.junit.Test;
 

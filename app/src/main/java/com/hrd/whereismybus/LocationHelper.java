@@ -1,4 +1,4 @@
-package com.example.whereismybus;
+package com.hrd.whereismybus;
 
 public class LocationHelper {
 
