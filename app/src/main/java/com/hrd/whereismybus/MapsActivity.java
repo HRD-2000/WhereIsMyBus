@@ -1,16 +1,14 @@
-package com.example.whereismybus;
+package com.hrd.whereismybus;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -33,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -47,6 +44,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     Boolean camera = true;
     Boolean alreadyexecuted = false;
+
+    //package com.hrd.whereismybus;
 
    //   LocationBroadcastReceiver receiver;
 
@@ -102,7 +101,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     void ReciveLocationFromFirebase()
     {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Current Location Driver");
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Current Location");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

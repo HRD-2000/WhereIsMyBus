@@ -1,4 +1,4 @@
-package com.example.whereismybus;
+package com.hrd.whereismybus;
 
 import android.Manifest;
 import android.app.Service;
