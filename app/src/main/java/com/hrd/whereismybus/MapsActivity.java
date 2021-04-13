@@ -45,6 +45,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Boolean camera = true;
     Boolean alreadyexecuted = false;
 
+    //package com.hrd.whereismybus;
+
    //   LocationBroadcastReceiver receiver;
 
    // private static final String TAG = MapsActivity.class.getSimpleName();
