@@ -25,16 +25,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hrd.whereismybus.directionhelpers.FetchURL;
+import com.hrd.whereismybus.directionhelpers.TaskLoadedCallback;
 
 import java.util.Timer;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
     private GoogleMap mMap;
     SupportMapFragment mapFragment;
@@ -44,6 +48,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Timer timer;
     int cam;
     FloatingActionButton floatingActionButton;
+
+    private MarkerOptions place1, place2;
+    private Polyline currentPolyline;
 
     Boolean camera = true;
     Boolean alreadyexecuted = false;
@@ -62,24 +69,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         floatingActionButton = findViewById(R.id.floating);
 
+        chechInternet();
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ReciveLocationFromFirebase();
                 cam = 1;
+
+                new FetchURL(MapsActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"),"driving");
+
             }
         });
 
          cam = 1;
-
-        if(isNetworkAvailable())
-        {
-
-        }
-        else
-        {
-            Toast.makeText(this,"No Internet",Toast.LENGTH_SHORT).show();
-        }
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -92,6 +95,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        place1 = new MarkerOptions().position(new LatLng(22.2674321, 73.22514831)).title("Location 1");
+        place2 = new MarkerOptions().position(new LatLng(21.2674321, 73.82514831)).title("Location 2");
 
     }
 
@@ -155,30 +161,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         Toast.makeText(MapsActivity.this, "Latitude is: " + latitude + ", Longitude is " + longitude, Toast.LENGTH_SHORT).show();
+
     }
 
-    public void updatecamera(LatLng latLng)
-    {
+    public void updatecamera(LatLng latLng) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
     }
-
-
-    public boolean isNetworkAvailable() {
-        try {
-            ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = null;
-
-            if (manager != null) {
-                networkInfo = manager.getActiveNetworkInfo();
-            }
-
-            return networkInfo != null && networkInfo.isConnected();
-
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -193,7 +181,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -202,8 +189,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
             boolean success = googleMap.setMapStyle(
-                    MapStyleOptions.loadRawResourceStyle(
-                            this, R.raw.map));
+                    MapStyleOptions.loadRawResourceStyle(this, R.raw.map));
 
             if (!success) {
                 Log.e("MapsActivity", "Style parsing failed.");
@@ -226,6 +212,61 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
        // mMap.setMaxZoomPreference(13);
 
+        mMap.addMarker(place1);
+        mMap.addMarker(place2);
+
+    }
+
+    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Mode
+        String mode = "mode=" + directionMode;
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
+
+        Log.v("URL",""+url);
+
+        return url;
+    }
+
+    @Override
+    public void onTaskDone(Object... values) {
+        if (currentPolyline != null) {
+            currentPolyline.remove();
+        }
+        currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
+
+    }
+
+    public void chechInternet(){
+
+        if(!isNetworkAvailable()) {
+            Toast.makeText(this,"No Internet",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public boolean isNetworkAvailable() {
+        try {
+            ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = null;
+
+            if (manager != null) {
+                networkInfo = manager.getActiveNetworkInfo();
+            }
+
+            return networkInfo != null && networkInfo.isConnected();
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }
