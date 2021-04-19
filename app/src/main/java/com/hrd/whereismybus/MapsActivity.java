@@ -35,6 +35,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hrd.whereismybus.Network.Internet;
 import com.hrd.whereismybus.directionhelpers.FetchURL;
 import com.hrd.whereismybus.directionhelpers.TaskLoadedCallback;
 
@@ -85,7 +86,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 cam = 1;
 
                 new FetchURL(MapsActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"),"driving");
-
             }
         });
 
@@ -137,7 +137,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                // callTimer(lat,lang);
 
                 location(lat,lang);
-                place2My(lat,lang);
             }
 
             @Override
@@ -146,8 +145,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
-    void place2My(String lat,String lang){
-        place2 = new MarkerOptions().position(new LatLng(Double.valueOf(lat), Double.valueOf(lang))).title("Location 2");
+    void place2My(MarkerOptions m2){
+        place2 = m2;
         Log.d("URL", "place2My: "+place2);
     }
 
@@ -183,6 +182,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             updatecamera(latLng);
             cam = 0;
         }
+
+        place2My(markerOptions);
 
         Toast.makeText(MapsActivity.this, "Latitude is: " + latitude + ", Longitude is " + longitude, Toast.LENGTH_SHORT).show();
 
@@ -271,26 +272,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void chechInternet(){
 
-        if(!isNetworkAvailable()) {
+        Internet internet = new Internet(MapsActivity.this);
+
+        if(!internet.isNetworkAvailable()) {
             Toast.makeText(this,"No Internet",Toast.LENGTH_SHORT).show();
         }
 
-    }
-
-    public boolean isNetworkAvailable() {
-        try {
-            ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = null;
-
-            if (manager != null) {
-                networkInfo = manager.getActiveNetworkInfo();
-            }
-
-            return networkInfo != null && networkInfo.isConnected();
-
-        } catch (Exception e) {
-            return false;
-        }
     }
 
 }

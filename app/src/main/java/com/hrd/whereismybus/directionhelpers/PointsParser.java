@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.hrd.whereismybus.R;
 
 import org.json.JSONObject;
 
@@ -71,10 +72,10 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
             lineOptions.addAll(points);
             if (directionMode.equalsIgnoreCase("walking")) {
                 lineOptions.width(10);
-                lineOptions.color(Color.WHITE);
+                lineOptions.color(Color.CYAN);
             } else {
                 lineOptions.width(20);
-                lineOptions.color(Color.WHITE);
+                lineOptions.color(Color.CYAN);
             }
             Log.d("mylog", "onPostExecute lineoptions decoded");
         }
