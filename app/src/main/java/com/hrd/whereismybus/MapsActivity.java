@@ -2,8 +2,10 @@ package com.hrd.whereismybus;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -55,6 +57,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Boolean camera = true;
     Boolean alreadyexecuted = false;
 
+    Intent i;
+    String locationv1;
     //package com.hrd.whereismybus;
 
    //   LocationBroadcastReceiver receiver;
@@ -66,6 +70,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        i = getIntent();
+        locationv1 = i.getStringExtra("locationResult");
 
         floatingActionButton = findViewById(R.id.floating);
 
@@ -97,7 +104,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         place1 = new MarkerOptions().position(new LatLng(22.2674321, 73.22514831)).title("Location 1");
-        place2 = new MarkerOptions().position(new LatLng(21.2674321, 73.82514831)).title("Location 2");
+        //place2 = new MarkerOptions().position(new LatLng(21.2674321, 73.82514831)).title("Location 2");
 
     }
 
@@ -130,6 +137,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                // callTimer(lat,lang);
 
                 location(lat,lang);
+                place2My(lat,lang);
             }
 
             @Override
@@ -137,6 +145,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+    }
+    void place2My(String lat,String lang){
+        place2 = new MarkerOptions().position(new LatLng(Double.valueOf(lat), Double.valueOf(lang))).title("Location 2");
+        Log.d("URL", "place2My: "+place2);
     }
 
     void location(String lat, String lang)
@@ -147,9 +159,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng latLng = new LatLng(longitude, latitude);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus));
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_icon_v1));
+        /*for (int i = 10; i <=100 ; i++) {
+            //if(i%2==0)
+            //{
+                markerOptions.rotation(i);
+            //}
+            //else {
+              //  markerOptions.rotation(30);
+            //}
+        }
+        markerOptions.anchor((float) 0.5,(float) 0.5);*/
+
         if (marker != null) {
             marker.setPosition(latLng);
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
         }
         else {
             marker = mMap.addMarker(markerOptions);
@@ -213,7 +237,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
        // mMap.setMaxZoomPreference(13);
 
         mMap.addMarker(place1);
-        mMap.addMarker(place2);
+        //mMap.addMarker(place2);
 
     }
 
