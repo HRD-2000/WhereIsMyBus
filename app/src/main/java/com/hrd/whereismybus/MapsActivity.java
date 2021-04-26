@@ -1,6 +1,7 @@
 package com.hrd.whereismybus;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
@@ -39,6 +42,7 @@ import com.hrd.whereismybus.Network.Internet;
 import com.hrd.whereismybus.directionhelpers.FetchURL;
 import com.hrd.whereismybus.directionhelpers.TaskLoadedCallback;
 
+import java.util.List;
 import java.util.Timer;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
@@ -47,16 +51,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     SupportMapFragment mapFragment;
     Marker marker;
     DatabaseReference databaseReference;
-    String latitude,longitude;
     Timer timer;
     int cam;
     FloatingActionButton floatingActionButton;
-
+    Location location1,location2;
     private MarkerOptions place1, place2;
     private Polyline currentPolyline;
-
+    ValueAnimator polyAnimator;
     Boolean camera = true;
     Boolean alreadyexecuted = false;
+    Boolean flag = false;
+    String lastLat,lastLng;
+    String newLat,newLng;
+    private float v;
+    Double vLat,vLng;
 
     Intent i;
     String locationv1;
@@ -135,8 +143,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String lat = dataSnapshot.child("latitude").getValue().toString();
                 String lang = dataSnapshot.child("longitude").getValue().toString();
                // callTimer(lat,lang);
+                if(flag == false){
+                    Log.d("test", "onDataChange: in flag if block");
+                    lastLat = lat;
+                    lastLng = lang;
+                    newLat = lat;
+                    newLng = lang;
+                    flag = true;
+                }else{
+                    lastLat = newLat;
+                    lastLng = newLng;
+                    newLat = lat;
+                    newLng = lang;
+                }
 
-                location(lat,lang);
+                location(lastLat,lastLng,newLat,newLng);
             }
 
             @Override
@@ -150,25 +171,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("URL", "place2My: "+place2);
     }
 
-    void location(String lat, String lang)
+    void location(String pre_Lat, String pre_Lang,String nextLat, String nextLang)
     {
-        Double latitude = Double.valueOf(lat).doubleValue();
-        Double longitude = Double.valueOf(lang).doubleValue();
+        Double latitude = Double.valueOf(nextLat).doubleValue();
+        Double longitude = Double.valueOf(nextLang).doubleValue();
 
         LatLng latLng = new LatLng(longitude, latitude);
-        MarkerOptions markerOptions = new MarkerOptions();
+        final MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_icon_v1));
-        /*for (int i = 10; i <=100 ; i++) {
-            //if(i%2==0)
-            //{
-                markerOptions.rotation(i);
-            //}
-            //else {
-              //  markerOptions.rotation(30);
-            //}
-        }
-        markerOptions.anchor((float) 0.5,(float) 0.5);*/
+
 
         if (marker != null) {
             marker.setPosition(latLng);
@@ -177,6 +189,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         else {
             marker = mMap.addMarker(markerOptions);
         }
+
+        final LatLng lastLocation = new LatLng(Double.valueOf(pre_Lat).doubleValue(), Double.valueOf(pre_Lang).doubleValue());
+        final LatLng newLocation = new LatLng(Double.valueOf(nextLat).doubleValue(), Double.valueOf(nextLang).doubleValue());
+
+        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+        valueAnimator.setDuration(5000);
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                v = valueAnimator.getAnimatedFraction();
+                vLat = v * newLocation.latitude + (1-v) * lastLocation.latitude;
+                vLng = v * newLocation.longitude + (1-v) * lastLocation.longitude;
+                LatLng newPos = new LatLng(vLat,vLng);
+                marker.setPosition(newPos);
+                marker.setAnchor(0.5f,0.5f);
+                location1 = new Location(String.valueOf(lastLocation));
+                location2 = new Location(String.valueOf(newPos));
+                float bearing = location1.getBearing();
+                float bearing1 = location2.getBearing();
+                float b = location1.bearingTo(location2);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    /*Toast.makeText(MapsActivity.this, "bearing1 :"+location1.getBearing()+"\nbearing2 :"+location2.getBearing()+"\n" +
+                            "Accuracy :"+location1.getAccuracy()+"\n" +
+                            "Accuracy :"+location2.getAccuracy()+"\n" +
+                            "BearingAccuracyDegree :"+location1.getBearingAccuracyDegrees()+"\n" +
+                            "BearingAccracyDegree :"+location2.getBearingAccuracyDegrees(), Toast.LENGTH_SHORT).show();*/
+                    Log.d("test", "location1 bearing to location2 :" + b);
+                }
+                //float bea = location.getBearing();
+                //marker.setRotation(b);
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                .target(newLocation)
+                .zoom(15.5f)
+                .build()));
+            }
+        });
+        valueAnimator.start();
+
+
+
+        /*for (int i = 10; i <=100 ; i++) {
+            //if(i%2==0)
+            //{
+                markerOptions.rotation(i);
+            //}
+            //else {
+              //  markerOptions.rotation(30);
+            //}
+        }*/
+        Location location = new Location(String.valueOf(latLng));
+        
+        //markerOptions.rotation(location.getBearing());
+
+
+
 
         if(cam == 1) {
             updatecamera(latLng);
@@ -189,8 +257,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    private float getBearing(LatLng lastLocation, LatLng newPos) {
+
+        double latBearing = Math.abs(lastLocation.latitude - newPos.latitude);
+        double lngBearing = Math.abs(lastLocation.longitude - newPos.longitude);
+
+        if (lastLocation.latitude < newPos.latitude && lastLocation.longitude < newPos.longitude){
+            return (float) (Math.toDegrees(Math.atan(lngBearing/latBearing)));
+        }else if (lastLocation.latitude >= newPos.latitude && lastLocation.longitude < newPos.longitude){
+            return (float) ((90 - Math.toDegrees(Math.atan(lngBearing/latBearing))) + 90);
+        }else if (lastLocation.latitude >= newPos.latitude && lastLocation.longitude >= newPos.longitude){
+            return (float) (Math.toDegrees(Math.atan(lngBearing/latBearing)) + 180);
+        }else if (lastLocation.latitude < newPos.latitude && lastLocation.longitude >= newPos.longitude){
+            return (float) ((90 - Math.toDegrees(Math.atan(lngBearing/latBearing))) + 270);
+        }
+        return -1;
+
+    }
+
     public void updatecamera(LatLng latLng) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+
+
     }
 
     @Override
@@ -209,6 +297,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        /*mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                .target(mMap.getCameraPosition().target)
+                .zoom(16)
+                .bearing(30)
+                .tilt(45)
+                .build()));*/
+
+
 
         try {
             // Customise the styling of the base map using a JSON object defined
@@ -247,10 +344,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
         // Destination of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        //waypoints
+        String way_points = "waypoints=23.0232899,72.5723871|22.324967, 73.197300|22.292063, 73.201727";
         // Mode
         String mode = "mode=" + directionMode;
         // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + mode;
+        String parameters = str_origin + "&" + str_dest + "&" + way_points + "&" + mode;
         // Output format
         String output = "json";
         // Building the url to the web service

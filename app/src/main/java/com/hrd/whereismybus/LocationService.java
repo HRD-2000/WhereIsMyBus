@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
@@ -48,6 +49,10 @@ public class LocationService extends Service {
                 intent.putExtra("locationResult",locationResult.getLastLocation());
                 intent.putExtra("latitude", locationResult.getLastLocation().getLatitude());
                 intent.putExtra("longitude", locationResult.getLastLocation().getLongitude());
+                intent.putExtra("brearing",locationResult.getLastLocation().getBearing());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    intent.putExtra("BearingAccuracy",locationResult.getLastLocation().getBearingAccuracyDegrees());
+                }
                 sendBroadcast(intent);
             }
         };
