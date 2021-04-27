@@ -24,6 +24,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -41,9 +42,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.hrd.whereismybus.Network.Internet;
 import com.hrd.whereismybus.directionhelpers.FetchURL;
 import com.hrd.whereismybus.directionhelpers.TaskLoadedCallback;
-
-import java.util.List;
 import java.util.Timer;
+
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
 
@@ -115,6 +117,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //place2 = new MarkerOptions().position(new LatLng(21.2674321, 73.82514831)).title("Location 2");
 
     }
+
+
 
     public void onLocationChanged()
     {
@@ -193,7 +197,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final LatLng lastLocation = new LatLng(Double.valueOf(pre_Lat).doubleValue(), Double.valueOf(pre_Lang).doubleValue());
         final LatLng newLocation = new LatLng(Double.valueOf(nextLat).doubleValue(), Double.valueOf(nextLang).doubleValue());
 
-        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+        /*final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
         valueAnimator.setDuration(5000);
         valueAnimator.setInterpolator(new LinearInterpolator());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -207,26 +211,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 marker.setAnchor(0.5f,0.5f);
                 location1 = new Location(String.valueOf(lastLocation));
                 location2 = new Location(String.valueOf(newPos));
-                float bearing = location1.getBearing();
-                float bearing1 = location2.getBearing();
-                float b = location1.bearingTo(location2);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    /*Toast.makeText(MapsActivity.this, "bearing1 :"+location1.getBearing()+"\nbearing2 :"+location2.getBearing()+"\n" +
-                            "Accuracy :"+location1.getAccuracy()+"\n" +
-                            "Accuracy :"+location2.getAccuracy()+"\n" +
-                            "BearingAccuracyDegree :"+location1.getBearingAccuracyDegrees()+"\n" +
-                            "BearingAccracyDegree :"+location2.getBearingAccuracyDegrees(), Toast.LENGTH_SHORT).show();*/
-                    Log.d("test", "location1 bearing to location2 :" + b);
-                }
-                //float bea = location.getBearing();
-                //marker.setRotation(b);
+                marker.setRotation((float) calculate_bearing(lastLocation,newPos));
                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
                 .target(newLocation)
                 .zoom(15.5f)
                 .build()));
             }
         });
-        valueAnimator.start();
+        valueAnimator.start();*/
 
 
 
@@ -257,24 +249,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private float getBearing(LatLng lastLocation, LatLng newPos) {
+    public double calculate_bearing(LatLng previous_latlong, LatLng current_latlong){
+       /* LatLng start = new LatLng(22.273225, 73.182623 );
+        LatLng end = new LatLng(22.273355, 73.182526);*/
 
-        double latBearing = Math.abs(lastLocation.latitude - newPos.latitude);
-        double lngBearing = Math.abs(lastLocation.longitude - newPos.longitude);
+        LatLng start = previous_latlong;
+        LatLng end = current_latlong;
 
-        if (lastLocation.latitude < newPos.latitude && lastLocation.longitude < newPos.longitude){
-            return (float) (Math.toDegrees(Math.atan(lngBearing/latBearing)));
-        }else if (lastLocation.latitude >= newPos.latitude && lastLocation.longitude < newPos.longitude){
-            return (float) ((90 - Math.toDegrees(Math.atan(lngBearing/latBearing))) + 90);
-        }else if (lastLocation.latitude >= newPos.latitude && lastLocation.longitude >= newPos.longitude){
-            return (float) (Math.toDegrees(Math.atan(lngBearing/latBearing)) + 180);
-        }else if (lastLocation.latitude < newPos.latitude && lastLocation.longitude >= newPos.longitude){
-            return (float) ((90 - Math.toDegrees(Math.atan(lngBearing/latBearing))) + 270);
-        }
-        return -1;
+        Double lat1,lat2,long1,long2;
 
+        lat1 = Math.toRadians(start.latitude);
+        long1 = Math.toRadians(start.longitude);
+
+        lat2 = Math.toRadians(end.latitude);
+        long2 = Math.toRadians(end.longitude);
+
+        double dL = (end.longitude - start.longitude);
+        Log.d("test", "dL : "+dL+"\nsin(dL) :"+sin(4.38101)+","+sin(4.381010000000003));
+        double temp = Math.toRadians(dL);
+        Log.d("test", "sin(x): "+sin(temp));
+        double X = cos(lat2) * sin(temp);
+        Log.d("test", "X= "+cos(lat2)+"*"+sin(temp)+"="+X);
+        Double Y = cos(lat1)*sin(lat2) - sin(lat1)*cos(lat2) * cos(temp);
+        Log.d("test", "Y= "+cos(lat1)+""+sin(lat2)+" - "+sin(lat1)+""+cos(lat2)+" * " + cos(temp)+" = "+Y);
+        double bearing = Math.toDegrees(Math.atan2(X,Y));
+        Log.d("test", "bearing in radians : "+Math.atan2(X,Y)+"\nbearing in degree : "+bearing);
+
+        return bearing;
     }
-
     public void updatecamera(LatLng latLng) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
