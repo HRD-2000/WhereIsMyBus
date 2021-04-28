@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,6 +45,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.hrd.whereismybus.Network.Internet;
 import com.hrd.whereismybus.directionhelpers.FetchURL;
 import com.hrd.whereismybus.directionhelpers.TaskLoadedCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
 import static java.lang.Math.cos;
@@ -67,9 +73,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String newLat,newLng;
     private float v;
     Double vLat,vLng;
-
+    RecyclerView rcv;
     Intent i;
     String locationv1;
+    List<route_pojo> list;
     //package com.hrd.whereismybus;
 
    //   LocationBroadcastReceiver receiver;
@@ -81,6 +88,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        rcv = findViewById(R.id.recyclerView);
+        rcv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
+        rcv.setHasFixedSize(true);
+
+        list = new ArrayList<>();
+        list.add(new route_pojo("Name 1","+91 12345 67890","Darbar Chokdi","VIER","https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_45@2x.png"));
+        list.add(new route_pojo("Name 2","+91 74125 89630","Padra","VIER","https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_44@2x.png"));
+        list.add(new route_pojo("Name 3","+91 98745 61233","Kalol","VIER","https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_35@2x.png"));
+        list.add(new route_pojo("Name 4","+91 32104 56987","Waghodia","VIER","https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_34@2x.png"));
+
+
+        routesAdapter apt = new routesAdapter(this,list);
+        rcv.setAdapter(apt);
 
         i = getIntent();
         locationv1 = i.getStringExtra("locationResult");
