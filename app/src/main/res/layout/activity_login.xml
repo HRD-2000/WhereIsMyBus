@@ -21,11 +21,10 @@
         android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="15sp"
+        android:layout_marginHorizontal="20sp"
         android:background="@color/white"
         app:cardCornerRadius="15sp"
         app:cardElevation="25sp"
-
         app:layout_constraintLeft_toLeftOf="@id/imageView"
         app:layout_constraintRight_toRightOf="@id/imageView"
         app:layout_constraintTop_toTopOf="@+id/textView">
@@ -34,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingVertical="10sp"
+            android:paddingVertical="20sp"
             android:paddingBottom="20sp">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -42,7 +41,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32sp"
+                android:layout_marginHorizontal="25sp"
                 app:startIconDrawable="@drawable/ic_login_username_24">
 
                 <!--this is the actual edit text which takes the input-->
@@ -59,7 +58,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32sp"
+                android:layout_marginHorizontal="25sp"
                 android:layout_marginTop="5sp"
                 app:endIconMode="password_toggle"
                 app:startIconDrawable="@drawable/ic_login_password_24">
@@ -91,8 +90,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#D62E2E"
-                android:textSize="7sp"
-                android:visibility="invisible"
+                android:textSize="12sp"
+                android:visibility="gone"
                 />
 
 
