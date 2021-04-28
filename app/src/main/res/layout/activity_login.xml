@@ -25,10 +25,10 @@
         android:background="#FFFFFF"
         app:cardCornerRadius="15sp"
         app:cardElevation="25sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+
         app:layout_constraintLeft_toLeftOf="@id/imageView"
         app:layout_constraintRight_toRightOf="@id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        app:layout_constraintTop_toTopOf="@+id/guideline2">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +42,8 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32sp">
+                android:layout_marginHorizontal="32sp"
+                app:startIconDrawable="@drawable/ic_login_username_24">
 
                 <!--this is the actual edit text which takes the input-->
                 <com.google.android.material.textfield.TextInputEditText
@@ -60,7 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32sp"
                 android:layout_marginTop="5sp"
-                app:endIconMode="password_toggle">
+                app:endIconMode="password_toggle"
+                app:startIconDrawable="@drawable/ic_login_password_24">
 
                 <!--this is the actual edit text which takes the input-->
                 <com.google.android.material.textfield.TextInputEditText
@@ -72,29 +74,36 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25sp"
+                android:layout_marginTop="40sp"
+                android:background="@drawable/login_btn_shape"
+                android:padding="5sp"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textSize="22sp"
+                app:backgroundTint="@color/black" />
+
 
         </LinearLayout>
 
 
     </com.google.android.material.card.MaterialCardView>
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25sp"
-        android:layout_marginTop="40sp"
-        android:background="@drawable/login_btn_shape"
-        android:padding="5sp"
-        android:text="Login"
-        android:textAllCaps="false"
-        android:textSize="22sp"
-        app:backgroundTint="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.57"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
-    <TextView
+
+    <!-- <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Forgot Password ?"
@@ -104,6 +113,6 @@
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" />
+        app:layout_constraintTop_toBottomOf="@+id/login_button" /> -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
