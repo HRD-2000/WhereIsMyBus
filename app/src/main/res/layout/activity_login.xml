@@ -24,7 +24,7 @@
         android:layout_marginHorizontal="20dp"
         android:background="@color/white"
         app:cardCornerRadius="15dp"
-        app:cardElevation="25dp"
+        app:cardElevation="15dp"
         app:layout_constraintLeft_toLeftOf="@id/imageView"
         app:layout_constraintRight_toRightOf="@id/imageView"
         app:layout_constraintTop_toTopOf="@+id/textView">
@@ -81,13 +81,24 @@
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/login_btn_shape"
-                android:padding="5dp"
                 android:text="Login"
                 android:textAllCaps="false"
-                android:textSize="22dp"
+                android:textSize="18dp"
                 app:backgroundTint="@color/black" />
 
-            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/product_sans_regular"
+                android:gravity="center"
+                android:text="Forgot Password ?"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:layout_gravity="center" />
+
+
+
         </LinearLayout>
 
 
@@ -109,12 +120,15 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/product_sans_regular"
         android:gravity="center"
-        android:text="Forgot Password ?"
+        android:text="Made for your convienence ♥ - Team HRD"
         android:textColor="@color/black"
-        android:textSize="18dp"
+        android:textSize="14dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView"
+        app:layout_constraintVertical_bias="0.889" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
