@@ -41,7 +41,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25sp"
+                android:layout_marginHorizontal="15sp"
                 app:startIconDrawable="@drawable/ic_login_username_24">
 
                 <!--this is the actual edit text which takes the input-->
@@ -58,8 +58,8 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25sp"
-                android:layout_marginTop="5sp"
+                android:layout_marginHorizontal="15sp"
+                android:layout_marginTop="15sp"
                 app:endIconMode="password_toggle"
                 app:startIconDrawable="@drawable/ic_login_password_24">
 
@@ -77,8 +77,8 @@
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25sp"
-                android:layout_marginTop="40sp"
+                android:layout_marginHorizontal="15sp"
+                android:layout_marginTop="25sp"
                 android:background="@drawable/login_btn_shape"
                 android:padding="5sp"
                 android:text="Login"
@@ -86,13 +86,7 @@
                 android:textSize="22sp"
                 app:backgroundTint="@color/black" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#D62E2E"
-                android:textSize="12sp"
-                android:visibility="gone"
-                />
+
 
 
         </LinearLayout>
