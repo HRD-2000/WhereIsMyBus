@@ -49,7 +49,8 @@
                     android:id="@+id/edt_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Username" />
+                    android:hint="Username"
+                    android:fontFamily="@font/product_sans_regular"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,16 +106,17 @@
     </TextView>
 
 
-    <!-- <TextView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Forgot Password ?"
+        android:fontFamily="@font/product_sans_regular"
         android:gravity="center"
-        android:layout_marginTop="40dp"
+        android:text="Forgot Password ?"
+        android:textColor="@color/black"
         android:textSize="18dp"
-        android:textColor="#000000"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" /> -->
+        app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

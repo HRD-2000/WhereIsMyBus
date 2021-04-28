@@ -12,7 +12,7 @@ import android.widget.ImageView;
 public class Login extends AppCompatActivity {
 
     //ImageView im;
-    EditText edt;
+    EditText edt_username,edt_password;
     Button login;
 
     @Override
@@ -21,7 +21,8 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //im = findViewById(R.id.imageView);
-        edt = findViewById(R.id.edt_username);
+        edt_username = findViewById(R.id.edt_username);
+        edt_password = findViewById(R.id.edt_password);
         login = findViewById(R.id.login_button);
 
         login.setOnClickListener(new View.OnClickListener() {
