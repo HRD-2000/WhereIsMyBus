@@ -87,6 +87,14 @@
                 android:textSize="22sp"
                 app:backgroundTint="@color/black" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#D62E2E"
+                android:textSize="7sp"
+                android:visibility="invisible"
+                />
+
 
         </LinearLayout>
 
@@ -96,7 +104,7 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="25sp"
         android:background="#D62E2E"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/imageView">
