@@ -58,7 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     DatabaseReference databaseReference;
     Timer timer;
     int cam;
-    FloatingActionButton floatingActionButton;
+//    FloatingActionButton floatingActionButton;
     Location location1,location2;
     private MarkerOptions place1, place2;
     private Polyline currentPolyline;
@@ -115,11 +115,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         i = getIntent();
         locationv1 = i.getStringExtra("locationResult");
 
-        floatingActionButton = findViewById(R.id.floating);
+ //       floatingActionButton = findViewById(R.id.floating);
 
         chechInternet();
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+  /*      floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ReciveLocationFromFirebase();
@@ -127,7 +127,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 new FetchURL(MapsActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"),"driving");
             }
-        });
+        });*/
 
          cam = 1;
 
