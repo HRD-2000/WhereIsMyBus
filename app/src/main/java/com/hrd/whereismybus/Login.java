@@ -8,14 +8,15 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.hrd.whereismybus.Pojo.Login_pojo;
-import com.hrd.whereismybus.Pojo.json;
+import com.hrd.whereismybus.Pojo.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,7 +26,6 @@ import java.util.ArrayList;
 
 public class Login extends AppCompatActivity {
 
-    //ImageView im;
     EditText edt_username,edt_password;
     Button login;
 
@@ -40,6 +40,8 @@ public class Login extends AppCompatActivity {
     String username,password;
     String login_url,result;
 
+    TextInputLayout filledTextField_username;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,8 @@ public class Login extends AppCompatActivity {
         edt_username = findViewById(R.id.edt_username);
         edt_password = findViewById(R.id.edt_password);
         login = findViewById(R.id.login_button);
+
+        filledTextField_username = findViewById(R.id.filledTextField_username);
 
         header = getString(R.string.header);
 
@@ -65,16 +69,17 @@ public class Login extends AppCompatActivity {
                     edt_password.setError("Password can't be empty");
                 }else{
                     loadingDialog.startLoadingDialog();
-                    //getData();
                     login_url = header+"/user_login.php?username="+edt_username.getText().toString();
                     new retrieve().execute();
+
+                    Log.v("Login",""+login_url);
 
                 }
             }
         });
     }
 
-    public class retrieve extends AsyncTask<Void,Void,Void> {
+    public class retrieve extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -85,44 +90,37 @@ public class Login extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
 
+
             try
             {
-                json o = new json();
+                JsonParser o = new JsonParser();
                 result = o.insert(login_url);
-                model = new ArrayList<Login_pojo>();
+                model = new ArrayList<>();
 
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("res");
 
-                if(jsonArray.length()!=0 ) {
+                Log.v("Login_DATA",""+result);
 
-                    for (int i = 0; i < jsonArray.length(); i++) {
+                for (int i = 0; i < jsonArray.length(); i++) {
 
-                        JSONObject jsonObject11 = jsonArray.getJSONObject(i);
-                        Login_pojo p = new Login_pojo();
+                    JSONObject jsonObject11 = jsonArray.getJSONObject(i);
+                    Login_pojo p = new Login_pojo();
 
-                        p.setUsername(jsonObject11.getString("username"));
-                        p.setPassword(jsonObject11.getString("password"));
-                        model.add(p);
+                    p.setUsername(jsonObject11.getString("username"));
+                    p.setPassword(jsonObject11.getString("password"));
+                    model.add(p);
 
-                        username = p.getUsername();
-                        password = p.getPassword();
+                    username = p.getUsername();
+                    password = p.getPassword();
 
-
-                    }
-                }else {
-                    Toast.makeText(Login.this, "Please check your Internet Connection and Retry", Toast.LENGTH_LONG).show();
-                    loadingDialog.dismissDialog();
                 }
-
-
             }
             catch (JSONException e)
             {
                 e.printStackTrace();
                 Toast.makeText(Login.this, "Please check your Internet Connection and Retry", Toast.LENGTH_LONG).show();
             }
-
             return null;
         }
 

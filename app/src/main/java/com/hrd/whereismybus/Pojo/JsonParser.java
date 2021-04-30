@@ -10,7 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
-public class json {
+public class JsonParser {
 
         String result;
 

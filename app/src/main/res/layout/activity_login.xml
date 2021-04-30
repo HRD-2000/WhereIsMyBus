@@ -50,6 +50,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Username"
+                    app:errorEnabled="true"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
                     android:fontFamily="@font/product_sans_regular"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -70,6 +73,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
+                    app:errorEnabled="true"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
                     android:inputType="textPassword" />
 
             </com.google.android.material.textfield.TextInputLayout>
