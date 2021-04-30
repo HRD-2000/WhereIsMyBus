@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
 import com.hrd.whereismybus.R;
-import com.hrd.whereismybus.route_pojo;
+import com.hrd.whereismybus.Pojo.route_pojo;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

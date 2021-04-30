@@ -1,4 +1,4 @@
-package com.hrd.whereismybus;
+package com.hrd.whereismybus.Pojo;
 
 public class stops_pojo {
 

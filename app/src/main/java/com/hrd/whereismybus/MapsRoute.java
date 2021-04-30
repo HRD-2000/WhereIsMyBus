@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import com.hrd.whereismybus.Adapters.StopsAdapter;
+import com.hrd.whereismybus.Pojo.stops_pojo;
 
 import java.util.ArrayList;
 import java.util.List;

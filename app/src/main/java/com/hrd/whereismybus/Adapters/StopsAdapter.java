@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hrd.whereismybus.R;
-import com.hrd.whereismybus.stops_pojo;
+import com.hrd.whereismybus.Pojo.stops_pojo;
 
 import java.util.List;
 
