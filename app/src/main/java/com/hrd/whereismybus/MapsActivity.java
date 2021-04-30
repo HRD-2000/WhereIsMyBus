@@ -35,9 +35,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hrd.whereismybus.Adapters.StopsAdapter;
 import com.hrd.whereismybus.Adapters.routesAdapter;
 import com.hrd.whereismybus.Network.Internet;
 import com.hrd.whereismybus.Pojo.route_pojo;
+import com.hrd.whereismybus.Pojo.stops_pojo;
 import com.hrd.whereismybus.directionhelpers.FetchURL;
 import com.hrd.whereismybus.directionhelpers.TaskLoadedCallback;
 
@@ -68,23 +70,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String newLat,newLng;
     private float v;
     Double vLat,vLng;
-    RecyclerView rcv;
     Intent i;
     String locationv1;
-    List<route_pojo> list;
-    //package com.hrd.whereismybus;
+    //List<route_pojo> list;
 
-   //   LocationBroadcastReceiver receiver;
 
-   // private static final String TAG = MapsActivity.class.getSimpleName();
-   // private HashMap<String, Marker> mMarkers = new HashMap<>();
+    StopsAdapter adapter;
+    RecyclerView recyclerView;
+    ArrayList<stops_pojo> list;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        rcv = findViewById(R.id.recyclerView);
+      /*  rcv = findViewById(R.id.recyclerView);
         rcv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
         rcv.setHasFixedSize(true);
 
@@ -96,7 +97,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         routesAdapter apt = new routesAdapter(this,list);
-        rcv.setAdapter(apt);
+        rcv.setAdapter(apt);*/
+
+        recyclerView = findViewById(R.id.recyclerView_routes);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setHasFixedSize(true);
+
+        list = new ArrayList<>();
+        list.add(new stops_pojo("Darbar Chokdi",01));
+        list.add(new stops_pojo("Eva Mall",02));
+        list.add(new stops_pojo("Tulsidham",03));
+        list.add(new stops_pojo("VIER",04));
+
+        adapter = new StopsAdapter(MapsActivity.this,list);
+        recyclerView.setAdapter(adapter);
 
         i = getIntent();
         locationv1 = i.getStringExtra("locationResult");

@@ -1,6 +1,7 @@
 package com.hrd.whereismybus.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
+import com.hrd.whereismybus.MapsActivity;
+import com.hrd.whereismybus.MapsRoute;
 import com.hrd.whereismybus.R;
 import com.hrd.whereismybus.Pojo.route_pojo;
 import com.squareup.picasso.Picasso;
@@ -54,13 +57,9 @@ public class routesAdapter extends RecyclerView.Adapter<routesAdapter.myViewHold
         holder.start_route.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context.getApplicationContext(),"Origin :"+origin+"\nDestination :"+destination,Toast.LENGTH_SHORT).show();
+                context.startActivity(new Intent(context, MapsActivity.class));
             }
         });
-
-
-        
-
 
     }
 
