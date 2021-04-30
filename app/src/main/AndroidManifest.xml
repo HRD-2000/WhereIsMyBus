@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MapsRoute"></activity>
+        <activity android:name=".Home"></activity>
+        <activity android:name=".MapsRoute" />
         <activity
             android:name=".Splash"
             android:screenOrientation="portrait">
@@ -29,7 +30,7 @@
         </activity>
         <activity
             android:name=".Login"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".LocationService"
@@ -50,7 +51,7 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".LocationService"
