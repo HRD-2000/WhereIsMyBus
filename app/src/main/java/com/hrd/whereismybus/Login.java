@@ -66,7 +66,7 @@ public class Login extends AppCompatActivity {
                 }else{
                     loadingDialog.startLoadingDialog();
                     //getData();
-                    login_url = header+"login.php?vEmployeeID="+edt_username.getText().toString();
+                    login_url = header+"/user_login.php?username="+edt_username.getText().toString();
                     new retrieve().execute();
 
                 }
