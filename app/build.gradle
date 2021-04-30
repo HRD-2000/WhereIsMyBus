@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
+//butterknife plugin
+//apply plugin: 'com.android.library'
+apply plugin: 'com.jakewharton.butterknife'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -10,7 +14,11 @@ android {
                exclude 'META-INF/DEPENDENCIES'
     }
 
-
+    // Butterknife requires Java 8.
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId "com.hrd.whereismybus"
@@ -67,6 +75,10 @@ dependencies {
 
     //picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //Butterknife
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 
 
 }

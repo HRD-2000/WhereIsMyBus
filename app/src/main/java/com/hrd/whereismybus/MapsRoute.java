@@ -30,10 +30,11 @@ public class MapsRoute extends AppCompatActivity  {
         list = new ArrayList<>();
         list.add(new stops_pojo("Darbar Chokdi",01));
         list.add(new stops_pojo("Eva Mall",02));
-        list.add(new stops_pojo("VIER",03));
-        list.add(new stops_pojo("Tulsidham",04));
+        list.add(new stops_pojo("Tulsidham",03));
+        list.add(new stops_pojo("VIER",04));
 
-        for (stops_pojo e:list) {
+
+        /*for (stops_pojo e:list) {
             String stop_name;
             Integer stop_no;
             stops_pojo p = new stops_pojo();
@@ -41,8 +42,9 @@ public class MapsRoute extends AppCompatActivity  {
             stop_no = p.getStop_no();
             adapter = new StopsAdapter(MapsRoute.this,stop_no,total_stops,stop_name);
 
-        }
+        }*/
 
+        adapter = new StopsAdapter(MapsRoute.this,list);
         recyclerView.setAdapter(adapter);
 
     }
