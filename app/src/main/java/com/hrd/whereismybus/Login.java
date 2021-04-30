@@ -55,7 +55,6 @@ public class Login extends AppCompatActivity {
         filledTextField_username = findViewById(R.id.filledTextField_username);
 
         header = getString(R.string.header);
-
         mSP = getSharedPreferences("login", Context.MODE_PRIVATE);
 
         loadingDialog = new LoadingWithAnim(Login.this);
@@ -63,6 +62,10 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                startActivity(new Intent(Login.this, MapsRoute.class));
+
+                /*
                 if (edt_username.getText().toString().length()==0 ) {
                     edt_username.setError("Username can't be empty");
                 }else if(edt_password.getText().toString().isEmpty()){
@@ -70,11 +73,11 @@ public class Login extends AppCompatActivity {
                 }else{
                     loadingDialog.startLoadingDialog();
                     login_url = header+"/user_login.php?username="+edt_username.getText().toString();
-                    new retrieve().execute();
+                    //new retrieve().execute();
 
                     Log.v("Login",""+login_url);
 
-                }
+                }*/
             }
         });
     }
