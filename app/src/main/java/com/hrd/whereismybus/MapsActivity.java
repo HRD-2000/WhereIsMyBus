@@ -398,6 +398,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.addMarker(place1);
 
+        LatLng sydney = new LatLng(-34, 151);
+        LatLng zoo = new LatLng(22.3115, 73.1914);
+        LatLng eva = new LatLng(22.2734, 73.1888 );
+
+        MarkerOptions sydney_marker_option = new MarkerOptions().position(sydney).title("Marker in Sydney");
+        MarkerOptions zoo_marker_option = new MarkerOptions().position(zoo).title("Marker at M.S University");
+        MarkerOptions eva_marker_option = new MarkerOptions().position(eva).title("Marker at Eva Mall");
+
+
+        mMap.addMarker(eva_marker_option);
+        mMap.addMarker(zoo_marker_option);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(eva));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(eva, 13));
+
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
         new FetchURL(MapsActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"),"driving");
 
 
