@@ -83,6 +83,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     StopsAdapter adapter;
     RecyclerView recyclerView;
     ArrayList<stops_pojo> list;
+    MarkerOptions m1,m2,m3,m4;
+    LatLng pos1,pos2,pos3,pos4;
 
 
     @Override
@@ -398,11 +400,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.addMarker(place1);
 
-        LatLng zoo = new LatLng(22.3115, 73.1914);
-        LatLng eva = new LatLng(22.2734, 73.1888 );
+        LatLng zoo = new LatLng(22.273372,73.182706);
+        LatLng eva = new LatLng(22.4076018 ,73.306419);
 
         MarkerOptions zoo_marker_option = new MarkerOptions().position(zoo).title("Darbar Chowkdi");
-        MarkerOptions eva_marker_option = new MarkerOptions().position(eva).title("Eva Mall");
+        MarkerOptions eva_marker_option = new MarkerOptions().position(eva).title("VIER");
 
 
         mMap.addMarker(eva_marker_option);
