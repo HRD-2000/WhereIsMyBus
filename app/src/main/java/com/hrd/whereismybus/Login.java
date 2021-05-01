@@ -68,7 +68,6 @@ public class Login extends AppCompatActivity {
 
                // startActivity(new Intent(Login.this, MapsRoute.class));
 
-
                 if (edt_username.getText().toString().length()==0 ) {
                     edt_username.setError("Username can't be empty");
                 }else if(edt_password.getText().toString().isEmpty()){
@@ -164,81 +163,4 @@ public class Login extends AppCompatActivity {
 
         }
     }
-
-
-    /*public void getData(){
-        AndroidNetworking.get(" http://prolonged-lake.000webhostapp.com/WhereIsMyBus//user_login.php?username=180800116035")
-                //.addPathParameter("customer_email",email_lg.getText().toString())
-                .setTag(this)
-                .setPriority(Priority.LOW)
-                .build()
-                .getAsObject(Login_pojo.class, new ParsedRequestListener<Login_pojo>() {
-
-
-                    @Override
-                    public void onResponse(Login_pojo response) {
-
-                        //Log.d("login", "email: "+response.customer_email+" pass :"+response.customer_password);
-                        //loadingDialog.dismissDialog();
-                        //Toast.makeText(Login.this, "email : "+response.customer_email+"\n pass :"+response.customer_password, Toast.LENGTH_SHORT).show();
-
-
-
-                        if (edt_username.getText().toString().equals(response.username) && edt_password.getText().toString().equals(response.password))
-                        {
-                            Log.d("login", "onResponse: sucess"+"\n user :"+response.username);
-                            Toast.makeText(Login.this, " Login sucessful... ", Toast.LENGTH_SHORT).show();
-                            //loadingDialog.dismissDialog();
-                            if(pd.isShowing())
-                            {
-                                pd.dismiss();
-                            }
-
-                            Intent intent = new Intent(Login.this, MapsRoute.class);
-
-                            startActivity(intent);
-                            //Toast.makeText(Login.this, "id : "+response.customer_email+" pass : "+response.customer_password+" id : " + response.customer_id, Toast.LENGTH_SHORT).show();
-
-                            mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                            editor = mSharedPreferences.edit();
-                            editor.putString("email_id",edt_username.getText().toString());
-                            editor.putString("password",edt_password.getText().toString());
-                            editor.commit();
-
-                            mSP.edit().putBoolean("logged",true).apply();
-
-                        }
-                        else{
-                            Log.d("login", "onResponse: else part");
-                            //loadingDialog.dismissDialog();
-                            if(pd.isShowing())
-                            {
-                                pd.dismiss();
-                            }
-
-                            Toast.makeText(Login.this, " Email or Password is incorrect!! ", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-
-                        Log.d("login", "onResponse: onError part");
-                        //loadingDialog.dismissDialog();
-                        if(pd.isShowing())
-                        {
-                            pd.dismiss();
-                        }
-
-                        Log.v("test", String.valueOf(anError));
-                        Toast.makeText(Login.this, " Email or Password is incorrect!! ", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
-    }*/
-
-
-
 }
