@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.hrd.whereismybus.Adapters.StopsAdapter;
@@ -90,6 +91,23 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
         mMap.addMarker(eva_marker_option);
         mMap.addMarker(zoo_marker_option);
+
+        MarkerOptions m1,m2,m3,m4;
+
+        m1 = new MarkerOptions().position(new LatLng(22.273372,73.182706)).title("Darbar Chowkdi");
+        m2 = new MarkerOptions().position(new LatLng(22.272672,73.187759)).title("Eva The Mall");
+        m3 = new MarkerOptions().position(new LatLng( 22.270184,73.196796)).title("Tulsidham Circle");
+        m4 = new MarkerOptions().position(new LatLng(22.4076018 ,73.306419)).title("VIER");
+
+        /*pos1 = new LatLng(22.273372,73.182706 );
+        pos2 = new LatLng(22.272672,73.187759);
+        pos3 = new LatLng(22.273372,73.182706 );
+        pos4 = new LatLng(22.272672,73.187759);*/
+
+        mMap.addMarker(m1);
+        mMap.addMarker(m2);
+        mMap.addMarker(m3);
+        mMap.addMarker(m4);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(eva));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(eva, 13));

@@ -408,14 +408,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("MapsActivity", "Can't find style. Error: ", e);
         }
 
-        mMap.addMarker(place1);
 
-        LatLng zoo = new LatLng(22.273372,73.182706);
-        LatLng eva = new LatLng(22.4076018 ,73.306419);
+        LatLng zoo = new LatLng(22.3115, 73.1914);
+        LatLng eva = new LatLng(22.2734, 73.1888 );
 
         MarkerOptions zoo_marker_option = new MarkerOptions().position(zoo).title("Darbar Chowkdi");
-        MarkerOptions eva_marker_option = new MarkerOptions().position(eva).title("VIER");
-
+        MarkerOptions eva_marker_option = new MarkerOptions().position(eva).title("Eva Mall");
 
         mMap.addMarker(eva_marker_option);
         mMap.addMarker(zoo_marker_option);
