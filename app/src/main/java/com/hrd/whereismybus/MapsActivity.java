@@ -398,13 +398,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.addMarker(place1);
 
-        LatLng sydney = new LatLng(-34, 151);
         LatLng zoo = new LatLng(22.3115, 73.1914);
         LatLng eva = new LatLng(22.2734, 73.1888 );
 
-        MarkerOptions sydney_marker_option = new MarkerOptions().position(sydney).title("Marker in Sydney");
-        MarkerOptions zoo_marker_option = new MarkerOptions().position(zoo).title("Marker at M.S University");
-        MarkerOptions eva_marker_option = new MarkerOptions().position(eva).title("Marker at Eva Mall");
+        MarkerOptions zoo_marker_option = new MarkerOptions().position(zoo).title("Darbar Chowkdi");
+        MarkerOptions eva_marker_option = new MarkerOptions().position(eva).title("Eva Mall");
 
 
         mMap.addMarker(eva_marker_option);
@@ -426,7 +424,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Destination of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
         //waypoints
-        String way_points = "waypoints=23.0232899,72.5723871|22.324967, 73.197300|22.292063, 73.201727";
+        String way_points = "waypoints=|22.2734,73.1888";
         // Mode
         String mode = "mode=" + directionMode;
         // Building the parameters to the web service
