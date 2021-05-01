@@ -1,4 +1,4 @@
-package com.hrd.whereismybus.Pojo;
+package com.hrd.whereismybus;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

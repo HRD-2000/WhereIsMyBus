@@ -44,7 +44,7 @@ public class Splash extends AppCompatActivity {
                     startActivity(new Intent(Splash.this,Login.class));
                 }
                 else{
-                    startActivity(new Intent(Splash.this, MapsActivity.class));
+                    startActivity(new Intent(Splash.this, MapsRoute.class));
                 }
                 finish();
             }
