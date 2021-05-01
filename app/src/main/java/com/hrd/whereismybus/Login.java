@@ -66,7 +66,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(Login.this, MapsRoute.class));
+               // startActivity(new Intent(Login.this, MapsRoute.class));
 
 
                 if (edt_username.getText().toString().length()==0 ) {
@@ -74,7 +74,7 @@ public class Login extends AppCompatActivity {
                 }else if(edt_password.getText().toString().isEmpty()){
                     edt_password.setError("Password can't be empty");
                 }else{
-                    login_url = header+"/user_login.php?username="+edt_username.getText().toString();
+                    login_url = header+"user_login.php?username="+edt_username.getText().toString();
                     new retrieve().execute();
 
                     Log.v("Login",""+login_url);
@@ -119,7 +119,7 @@ public class Login extends AppCompatActivity {
                     username = p.getUsername();
                     password = p.getPassword();
 
-                    Log.v("Login_DATA","id: "+username +"pass: "+password);
+                    Log.v("username","id: "+username +"pass: "+password);
 
                 }
             }
@@ -153,7 +153,6 @@ public class Login extends AppCompatActivity {
 
                 Log.d("sucess",""+password);
                 Log.d("sucess",""+username);
-
 
             }
             else{
