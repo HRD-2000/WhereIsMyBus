@@ -426,7 +426,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Destination of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
         //waypoints
-        String way_points = "waypoints=|22.2734,73.1888";
+        String way_points = "waypoints=22.270184,73.196796|22.272672,73.187759";
         // Mode
         String mode = "mode=" + directionMode;
         // Building the parameters to the web service
