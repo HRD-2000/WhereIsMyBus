@@ -12,7 +12,7 @@
     sothree:umanoShadowHeight="4dp"
     tools:context=".MapsActivity">
 
-    <!--
+
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -21,7 +21,7 @@
         tools:context=".MapsActivity"
         tools:layout="@layout/activity_maps">
 
-    </fragment> -->
+    </fragment>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -139,7 +139,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <!--  -->
+    <!--
     <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
           sothree:layout_constraintStart_toStartOf="parent"
           sothree:layout_constraintTop_toTopOf="parent">
 
-      </TextView>
+      </TextView>  -->
 
 
 
