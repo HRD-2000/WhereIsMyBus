@@ -309,7 +309,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     public void updatecamera(LatLng latLng) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
     }
 
@@ -352,22 +352,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.e("MapsActivity", "Can't find style. Error: ", e);
         }
 
-   //   Add a marker in Sydney and move the camera
-       /* MarkerOptions markerOptions = new MarkerOptions();
-        LatLng Eva_mall = new LatLng(22.2734, 73.1888);
-        mMap.addMarker(new MarkerOptions().position(Eva_mall).title("Stop at Eva Mall,Vadodara"));
-        mMap.addMarker(markerOptions);
-        markerOptions.position(Eva_mall)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_twotone_directions_bus_24))
-                .title("Stop at Eva Mall");
-                */
-
-       // mMap.moveCamera(CameraUpdateFactory.newLatLng(Eva_mall));
-
-       // mMap.setMaxZoomPreference(13);
-
         mMap.addMarker(place1);
-        //mMap.addMarker(place2);
 
     }
 
