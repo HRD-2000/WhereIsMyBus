@@ -385,6 +385,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .tilt(45)
                 .build()));*/
 
+        m1 = new MarkerOptions().position(new LatLng(22.273372,73.182706));
+        m2 = new MarkerOptions().position(new LatLng(22.272672,73.187759));
+        m3 = new MarkerOptions().position(new LatLng( 22.270184,73.196796));
+        m4 = new MarkerOptions().position(new LatLng(22.4076018 ,73.306419));
+
+        pos1 = new LatLng(22.273372,73.182706 );
+        pos2 = new LatLng(22.272672,73.187759);
+        pos3 = new LatLng(22.273372,73.182706 );
+        pos4 = new LatLng(22.272672,73.187759);
+
         try {
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
@@ -410,12 +420,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(eva_marker_option);
         mMap.addMarker(zoo_marker_option);
 
+        mMap.addMarker(m2);
+        mMap.addMarker(m3);
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(eva));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(eva, 13));
 
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        new FetchURL(MapsActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"),"driving");
+        new FetchURL(MapsActivity.this).execute(getUrl(zoo_marker_option.getPosition(), eva_marker_option.getPosition(), "driving"),"driving");
 
 
     }
