@@ -27,10 +27,7 @@ public class DistanceMatrix {
         dataTransfer[1] = url;
         dataTransfer[2] = new LatLng(endLat,endLng);
 
-
-
-
-
+        getDistancesData.execute(dataTransfer);
 
     }
 

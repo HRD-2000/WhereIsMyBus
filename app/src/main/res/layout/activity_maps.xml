@@ -12,7 +12,7 @@
     sothree:umanoShadowHeight="4dp"
     tools:context=".MapsActivity">
 
-    <!--  -->
+    <!--
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -21,7 +21,7 @@
         tools:context=".MapsActivity"
         tools:layout="@layout/activity_maps">
 
-    </fragment>
+    </fragment> -->
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,36 +29,27 @@
         android:layout_height="match_parent"
         android:background="@drawable/slider_background">
 
-        <ImageView
-            android:id="@+id/up_site_hint"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="25dp"
-            android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
-            sothree:layout_constraintEnd_toEndOf="parent"
-            sothree:layout_constraintStart_toStartOf="parent"
-            sothree:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="35dp"
             android:fontFamily="@font/product_sans_regular"
             android:text="Your Bus Stop : "
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="10dp"
             sothree:layout_constraintStart_toStartOf="parent"
-            sothree:layout_constraintTop_toBottomOf="@+id/up_site_hint" />
+            sothree:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:fontFamily="@font/product_sans_regular"
             android:text="I'm Slider"
-            android:layout_marginStart="5dp"
             android:textColor="@color/white"
             android:textSize="20dp"
             sothree:layout_constraintBottom_toBottomOf="@+id/textView7"
@@ -71,53 +62,53 @@
             android:id="@+id/time_tv_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/product_sans_regular"
             android:text="Time"
             android:textColor="@color/white"
             android:textSize="18dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="15dp"
-            sothree:layout_constraintStart_toStartOf="parent"
-            sothree:layout_constraintTop_toBottomOf="@id/textView6" />
+            sothree:layout_constraintEnd_toEndOf="@+id/time_tv"
+            sothree:layout_constraintStart_toStartOf="@+id/time_tv"
+            sothree:layout_constraintTop_toBottomOf="@+id/time_tv" />
 
         <TextView
             android:id="@+id/time_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/product_sans_bold"
             android:text="25 min"
             android:textColor="@color/white"
             android:textSize="20dp"
-            android:layout_marginTop="5dp"
-            sothree:layout_constraintEnd_toEndOf="@+id/time_tv_heading"
-            sothree:layout_constraintStart_toStartOf="@+id/time_tv_heading"
-            sothree:layout_constraintTop_toBottomOf="@+id/time_tv_heading" />
-
-        <TextView
-            android:id="@+id/duration_tv_heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:fontFamily="@font/product_sans_regular"
-            android:text="Duration"
-            android:textColor="@color/white"
-            android:textSize="18dp"
-            sothree:layout_constraintEnd_toStartOf="@+id/appCompatButton"
-            sothree:layout_constraintStart_toEndOf="@+id/time_tv"
+            sothree:layout_constraintStart_toStartOf="parent"
             sothree:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <TextView
-            android:id="@+id/duration_tv"
+            android:id="@+id/distance_tv_heading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/product_sans_regular"
+            android:text="Distance"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            sothree:layout_constraintEnd_toEndOf="@+id/distance_tv"
+            sothree:layout_constraintStart_toStartOf="@+id/distance_tv"
+            sothree:layout_constraintTop_toBottomOf="@+id/distance_tv" />
+
+        <TextView
+            android:id="@+id/distance_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/product_sans_bold"
             android:text="15 km"
+            android:layout_marginTop="10dp"
             android:textColor="@color/white"
             android:textSize="20dp"
-            sothree:layout_constraintEnd_toEndOf="@+id/duration_tv_heading"
-            sothree:layout_constraintStart_toStartOf="@+id/duration_tv_heading"
-            sothree:layout_constraintTop_toBottomOf="@+id/duration_tv_heading" />
+            sothree:layout_constraintEnd_toStartOf="@+id/appCompatButton"
+            sothree:layout_constraintStart_toEndOf="@+id/time_tv"
+            sothree:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/appCompatButton"
@@ -129,9 +120,9 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="16dp"
-            sothree:layout_constraintBottom_toBottomOf="@+id/duration_tv"
+            sothree:layout_constraintBottom_toBottomOf="@+id/distance_tv_heading"
             sothree:layout_constraintEnd_toEndOf="parent"
-            sothree:layout_constraintTop_toTopOf="@+id/duration_tv_heading" />
+            sothree:layout_constraintTop_toTopOf="@+id/distance_tv" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -139,16 +130,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="30sp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="60dp"
             sothree:layout_constraintEnd_toEndOf="parent"
-            sothree:layout_constraintHorizontal_bias="0.0"
+            sothree:layout_constraintHorizontal_bias="1.0"
             sothree:layout_constraintStart_toStartOf="parent"
-            sothree:layout_constraintTop_toBottomOf="@+id/duration_tv" />
+            sothree:layout_constraintTop_toBottomOf="@+id/appCompatButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <!--
+    <!--  -->
     <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -161,7 +152,7 @@
           sothree:layout_constraintStart_toStartOf="parent"
           sothree:layout_constraintTop_toTopOf="parent">
 
-      </TextView> -->
+      </TextView>
 
 
 

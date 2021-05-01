@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                //startActivity(new Intent(Login.this, MapsRoute.class));
+                startActivity(new Intent(Login.this, MapsRoute.class));
                 /*login_url = header+"/user_login.php?username="+edt_username.getText().toString();
                 Log.d("login", "onClick: "+login_url);
                 Toast.makeText(Login.this, ""+login_url, Toast.LENGTH_SHORT).show();
@@ -84,7 +84,7 @@ public class Login extends AppCompatActivity {
 
                 getData();*/
 
-                if (edt_username.getText().toString().length()==0 ) {
+                /*if (edt_username.getText().toString().length()==0 ) {
                     edt_username.setError("Username can't be empty");
                 }else if(edt_password.getText().toString().isEmpty()){
                     edt_password.setError("Password can't be empty");
@@ -97,7 +97,7 @@ public class Login extends AppCompatActivity {
 
                     Log.d("Login",""+login_url);
 
-                }
+                }*/
             }
         });
     }
