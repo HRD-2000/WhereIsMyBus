@@ -386,8 +386,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .build()));*/
 
         m1 = new MarkerOptions().position(new LatLng(22.273372,73.182706));
-        m2 = new MarkerOptions().position(new LatLng(22.272672,73.187759));
-        m3 = new MarkerOptions().position(new LatLng( 22.270184,73.196796));
+        m2 = new MarkerOptions().position(new LatLng(22.272672,73.187759)).title("Eva The Mall");
+        m3 = new MarkerOptions().position(new LatLng( 22.270184,73.196796)).title("Tulsidham Circle");
         m4 = new MarkerOptions().position(new LatLng(22.4076018 ,73.306419));
 
         pos1 = new LatLng(22.273372,73.182706 );
