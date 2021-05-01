@@ -44,7 +44,8 @@ public class Login extends AppCompatActivity {
     ArrayList<Login_pojo> model;
 
     String username,password;
-    String login_url,result;
+    String login_url;
+    String result;
     ProgressDialog pd;
 
     TextInputLayout filledTextField_username;
@@ -71,33 +72,20 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                startActivity(new Intent(Login.this, MapsRoute.class));
 
-                //startActivity(new Intent(Login.this, MapsRoute.class));
-                /*login_url = header+"/user_login.php?username="+edt_username.getText().toString();
-                Log.d("login", "onClick: "+login_url);
-                Toast.makeText(Login.this, ""+login_url, Toast.LENGTH_SHORT).show();
-                //loadingDialog.startLoadingDialog();
-                pd= new ProgressDialog(Login.this);
-                pd.setTitle("Retrieving.. ");
-                pd.setCancelable(false);
-                pd.show();
 
-                getData();*/
-
-                if (edt_username.getText().toString().length()==0 ) {
+            /*    if (edt_username.getText().toString().length()==0 ) {
                     edt_username.setError("Username can't be empty");
                 }else if(edt_password.getText().toString().isEmpty()){
                     edt_password.setError("Password can't be empty");
                 }else{
-
                     login_url = header+"/user_login.php?username="+edt_username.getText().toString();
-                    Toast.makeText(Login.this, ""+login_url, Toast.LENGTH_SHORT).show();
-
                     new retrieve().execute();
 
-                    Log.d("Login",""+login_url);
+                    Log.v("Login",""+login_url);
 
-                }
+                }*/
             }
         });
     }
@@ -114,14 +102,12 @@ public class Login extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-
-
-            json o = new json();
-            result = o.insert(login_url);
-            model = new ArrayList<>();
-
             try
             {
+                JsonParser o = new JsonParser();
+                result = o.insert(login_url);
+                model = new ArrayList<>();
+
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("res");
 
@@ -139,12 +125,14 @@ public class Login extends AppCompatActivity {
                     username = p.getUsername();
                     password = p.getPassword();
 
+                    Log.v("Login_DATA","id: "+username +"pass: "+password);
+
                 }
             }
-            catch (JSONException e)
+            catch ( JSONException e)
             {
                 e.printStackTrace();
-                //Toast.makeText(Login.this, "Please check your Internet Connection and Retry", Toast.LENGTH_LONG).show();
+              //  Toast.makeText(Login.this, "Please check your Internet Connection and Retry", Toast.LENGTH_LONG).show();
             }
             return null;
         }
@@ -168,6 +156,10 @@ public class Login extends AppCompatActivity {
                 editor.commit();
 
                 mSP.edit().putBoolean("logged",true).apply();
+
+                Log.d("sucess",""+password);
+                Log.d("sucess",""+username);
+
 
             }
             else{
