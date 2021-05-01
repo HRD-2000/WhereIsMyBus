@@ -6,7 +6,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,8 +22,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.hrd.whereismybus.Adapters.StopsAdapter;
 import com.hrd.whereismybus.Adapters.routesAdapter;
+import com.hrd.whereismybus.Pojo.Login_pojo;
 import com.hrd.whereismybus.Pojo.route_pojo;
 import com.hrd.whereismybus.Pojo.stops_pojo;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +37,11 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
     RecyclerView rcv;
     List<route_pojo> list;
+
+    String routes_url;
+    String result;
+
+    String header;
 
     private GoogleMap mMap;
     MarkerOptions sydney_marker_option,eva_marker_option,zoo_marker_option;
@@ -43,6 +58,9 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         rcv = findViewById(R.id.recyclerView);
         rcv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
         rcv.setHasFixedSize(true);
+
+        header = getString(R.string.header);
+        routes_url = header+"user_login.php";
 
         list = new ArrayList<>();
         list.add(new route_pojo("Name 1","+91 12345 67890","Darbar Chokdi","VIER","https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_45@2x.png"));
@@ -79,4 +97,62 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
     }
+
+    public class retrieve extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+         //   loadingDialog.startLoadingDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            try
+            {
+                JsonParser o = new JsonParser();
+                result = o.insert(routes_url);
+                //list = new ArrayList<>();
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("res");
+
+                Log.v("Login_DATA",""+result);
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+
+                    JSONObject jsonObject11 = jsonArray.getJSONObject(i);
+                    route_pojo p = new route_pojo();
+
+                    p.setS_location(jsonObject11.getString("source"));
+                    p.setE_location(jsonObject11.getString("destination"));
+               /*   p.setProfile(jsonObject11.getString("password"));
+                    p.setPhone_no(jsonObject11.getString("password"));*/
+                    p.setName(jsonObject11.getString("routes_name"));
+
+                    list.add(p);
+
+                }
+            }
+            catch ( JSONException e)
+            {
+                e.printStackTrace();
+                //  Toast.makeText(Login.this, "Please check your Internet Connection and Retry", Toast.LENGTH_LONG).show();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            routesAdapter apt = new routesAdapter(MapsRoute.this,list);
+            rcv.setAdapter(apt);
+
+
+        }
+    }
+
 }

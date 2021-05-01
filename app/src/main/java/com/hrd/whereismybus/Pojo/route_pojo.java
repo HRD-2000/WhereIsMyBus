@@ -12,6 +12,10 @@ public class route_pojo {
         this.profile = profile;
     }
 
+    public route_pojo() {
+
+    }
+
     public String getName() {
         return Name;
     }

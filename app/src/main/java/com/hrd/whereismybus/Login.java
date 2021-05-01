@@ -40,7 +40,6 @@ public class Login extends AppCompatActivity {
     String username,password;
     String login_url;
     String result;
-    ProgressDialog pd;
 
     TextInputLayout filledTextField_username;
 
@@ -60,7 +59,6 @@ public class Login extends AppCompatActivity {
         mSP = getSharedPreferences("login", Context.MODE_PRIVATE);
 
         loadingDialog = new LoadingWithAnim(Login.this);
-
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
