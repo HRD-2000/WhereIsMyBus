@@ -108,7 +108,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         pos4 = new LatLng(22.272672,73.187759);*/
 
         mMap.addMarker(m1);
-        mMap.addMarker(m2);
+        //mMap.addMarker(m2);
         mMap.addMarker(m3);
         mMap.addMarker(m4);
 
