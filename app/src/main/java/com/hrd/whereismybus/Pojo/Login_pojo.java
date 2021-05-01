@@ -2,7 +2,8 @@ package com.hrd.whereismybus.Pojo;
 
 public class Login_pojo {
 
-    String username,password;
+    public String username;
+    public String password;
 
     public String getUsername() {
         return username;

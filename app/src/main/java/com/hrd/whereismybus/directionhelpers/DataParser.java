@@ -1,5 +1,7 @@
 package com.hrd.whereismybus.directionhelpers;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -50,6 +52,45 @@ public class DataParser {
         } catch (Exception e) {
         }
         return routes;
+    }
+
+    public HashMap<String, String> parseDirection(String JSONdata){
+        JSONArray ja = null;
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(JSONdata);
+
+            ja = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return getDistance(ja);
+
+    }
+
+    private  HashMap<String, String> getDistance(JSONArray googleDistanceJson){
+        HashMap<String, String> googleDistancesMap = new HashMap<>();
+        String distance = " ";
+        String duration = " ";
+
+        Log.d("json responce",""+googleDistanceJson.toString());
+
+        try {
+            duration = googleDistanceJson.getJSONObject(0).getJSONObject("duration").getString("text");
+
+            distance = googleDistanceJson.getJSONObject(0).getJSONObject("distance").getString("text");
+
+
+            googleDistancesMap.put("duration",duration);
+            googleDistancesMap.put("distance",distance);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return googleDistancesMap;
     }
 
 
