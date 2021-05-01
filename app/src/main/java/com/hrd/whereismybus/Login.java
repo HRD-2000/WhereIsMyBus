@@ -13,16 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.androidnetworking.AndroidNetworking;
-import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.hrd.whereismybus.Pojo.Login_pojo;
-import com.hrd.whereismybus.Pojo.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,7 +69,7 @@ public class Login extends AppCompatActivity {
                 startActivity(new Intent(Login.this, MapsRoute.class));
 
 
-            /*    if (edt_username.getText().toString().length()==0 ) {
+                if (edt_username.getText().toString().length()==0 ) {
                     edt_username.setError("Username can't be empty");
                 }else if(edt_password.getText().toString().isEmpty()){
                     edt_password.setError("Password can't be empty");
@@ -85,7 +79,7 @@ public class Login extends AppCompatActivity {
 
                     Log.v("Login",""+login_url);
 
-                }*/
+                }
             }
         });
     }

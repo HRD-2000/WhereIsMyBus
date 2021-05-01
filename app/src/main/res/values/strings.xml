@@ -16,6 +16,6 @@
     -->
     <string name="hello_world">Hello Square World!</string>
 
-    <string name="header">http://prolonged-lake.000webhostapp.com/WhereIsMyBus/</string>
+    <string name="header">https://prolonged-lake.000webhostapp.com/WhereIsMyBus/</string>
 
 </resources>
