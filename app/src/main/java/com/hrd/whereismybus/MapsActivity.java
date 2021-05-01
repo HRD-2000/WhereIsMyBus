@@ -114,6 +114,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         list.add(new stops_pojo("Tulsidham",03));
         list.add(new stops_pojo("VIER",04));
 
+        new FetchURL(MapsActivity.this).execute(getUrl(place1.getPosition(), place2.getPosition(), "driving"),"driving");
+
         adapter = new StopsAdapter(MapsActivity.this,list);
         recyclerView.setAdapter(adapter);
 
@@ -171,8 +173,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //place2 = new MarkerOptions().position(new LatLng(21.2674321, 73.82514831)).title("Location 2");
 
     }
-
-
 
     public void onLocationChanged()
     {
