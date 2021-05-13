@@ -36,6 +36,7 @@ public class LoadingWithAnim {
             builder.setCancelable(false);
 
             alertDialog = builder.create();
+            alertDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         }
 
         alertDialog.show();

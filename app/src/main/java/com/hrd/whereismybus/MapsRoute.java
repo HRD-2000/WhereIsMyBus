@@ -1,5 +1,7 @@
 package com.hrd.whereismybus;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -8,14 +10,26 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,6 +38,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.hrd.whereismybus.Adapters.StopsAdapter;
 import com.hrd.whereismybus.Adapters.routesAdapter;
 import com.hrd.whereismybus.Pojo.Login_pojo;
@@ -50,14 +67,24 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     MarkerOptions sydney_marker_option, eva_marker_option, zoo_marker_option;
 
+    public static final int REQUEST_CHECK_SETTING = 101;
+    public static final int REQUEST_CHECK_SETTING_1 = 102;
+    private String[] permission = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
+    LocationRequest locationRequest;
+    FusedLocationProviderClient fusedLocationProviderClient;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps_route);
 
+        getPermission();
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         rcv = findViewById(R.id.recyclerView);
         rcv.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
@@ -123,9 +150,18 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
             return;
         }
         mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16));
+            }
+        });
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(eva));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(eva, 13));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(eva));
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(eva, 13));
 
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
@@ -188,4 +224,102 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         }
     }
 
+    private void getPermission() {
+
+        Toast.makeText(this, "In getPermission method", Toast.LENGTH_SHORT).show();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(permission,REQUEST_CHECK_SETTING);
+            }else {
+                Toast.makeText(this, "Permission Granted already 1", Toast.LENGTH_SHORT).show();
+                getTurnOnGps();
+                //startActivity(new Intent(Home.this,MapsActivity.class));
+            }
+        }else {
+            Toast.makeText(this, "Permission Granted already 2", Toast.LENGTH_SHORT).show();
+            getTurnOnGps();
+            //startActivity(new Intent(Home.this,MapsActivity.class));
+
+        }
+    }
+
+    private void getTurnOnGps() {
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(2000);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
+
+        Task<LocationSettingsResponse> result = LocationServices.getSettingsClient(getApplicationContext())
+                .checkLocationSettings(builder.build());
+
+        result.addOnCompleteListener(new OnCompleteListener<LocationSettingsResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<LocationSettingsResponse> task) {
+                try {
+                    LocationSettingsResponse response =task.getResult(ApiException.class);
+                    Toast.makeText(MapsRoute.this, "GPS is On!!", Toast.LENGTH_SHORT).show();
+                    Log.d("test", "onComplete: GPS is on");
+                    //startActivity(new Intent(home.this,MapsActivity.class));
+                } catch (ApiException e) {
+                    switch (e.getStatusCode()){
+
+                        case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                            ResolvableApiException resolvableApiException = (ResolvableApiException) e;
+                            try {
+                                resolvableApiException.startResolutionForResult(MapsRoute.this,REQUEST_CHECK_SETTING_1);
+                            } catch (IntentSender.SendIntentException sendIntentException) {
+
+                            }
+                            break;
+                        case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                            break;
+                    }
+                }
+            }
+        });
+
+
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CHECK_SETTING){
+            Log.d("test", "onRequestPermissionsResult: 2 invoked");
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Log.d("test", "onRequestPermissionsResult: 3 invoked");
+                getTurnOnGps();
+            }else {
+                Log.d("test", "onRequestPermissionsResult: 4 invoked");
+                getTurnOnGps();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CHECK_SETTING_1){
+
+            switch (resultCode){
+
+                case Activity.RESULT_OK:
+                    Toast.makeText(getApplicationContext(),"GPS is Turned ON",Toast.LENGTH_SHORT).show();
+                    Log.d("test", "onActivityResult: GPS is Turned On");
+                    //startActivity(new Intent(home.this,MapsActivity.class));
+                    break;
+                case Activity.RESULT_CANCELED:
+                    Toast.makeText(this, "GPS is required to be turned on", Toast.LENGTH_SHORT).show();
+                    Log.d("test", "onActivityResult: GPS is rquired to be turned on");
+            }
+
+        }
+    }
 }
