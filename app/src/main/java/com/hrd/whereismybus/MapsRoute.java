@@ -46,6 +46,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hrd.whereismybus.Adapters.StopsAdapter;
 import com.hrd.whereismybus.Adapters.routesAdapter;
 import com.hrd.whereismybus.Pojo.Login_pojo;
+import com.hrd.whereismybus.Pojo.marker_pojo;
 import com.hrd.whereismybus.Pojo.route_pojo;
 import com.hrd.whereismybus.Pojo.stops_pojo;
 
@@ -60,12 +61,13 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
     RecyclerView rcv;
     List<route_pojo> list;
+    List<marker_pojo> model;
     LatLng userLatLng;
     String routes_url;
-    String result;
-    String driver_n_routes_url;
+    String result,result1;
+    String driver_n_routes_url,urlForMarkers;
     String header;
-    LoadingWithAnim loading;
+    LoadingWithAnim loading1,loading2;
     private GoogleMap mMap;
     MarkerOptions sydney_marker_option, eva_marker_option, zoo_marker_option;
     FloatingActionButton userLocationBtn;
@@ -83,7 +85,8 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
         getPermission();
 
-        loading = new LoadingWithAnim(MapsRoute.this);
+        loading1 = new LoadingWithAnim(MapsRoute.this);
+        loading2 = new LoadingWithAnim(MapsRoute.this);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -99,7 +102,11 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         routes_url = header + "user_login.php";
 
         driver_n_routes_url = header + "driver_n_routes.php";
+        urlForMarkers = header + "stop_markers.php";
         new retrieve().execute();
+        new retrieve_marker().execute();
+
+
         //list = new ArrayList<>();
         //list.add(new route_pojo("Name 1", "+91 12345 67890", "Darbar Chokdi", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_45@2x.png"));
         //list.add(new route_pojo("Name 2", "+91 74125 89630", "Padra", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_44@2x.png"));
@@ -117,6 +124,15 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
             }
         });
 
+
+
+
+        /*for (int i = 0; i < model.size() ; i++) {
+
+            LatLng latLng = new LatLng(Double.parseDouble(String.valueOf(model.get(i))), Double.parseDouble(String.valueOf(model.get(i))));
+            mMap.addMarker(new MarkerOptions().position(latLng).title(String.valueOf(model.get(i))));
+        }*/
+
     }
 
     @Override
@@ -124,6 +140,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
         mMap = googleMap;
 
+        /*
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         LatLng zoo = new LatLng(22.3115, 73.1914);
@@ -146,12 +163,12 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         /*pos1 = new LatLng(22.273372,73.182706 );
         pos2 = new LatLng(22.272672,73.187759);
         pos3 = new LatLng(22.273372,73.182706 );
-        pos4 = new LatLng(22.272672,73.187759);*/
+        pos4 = new LatLng(22.272672,73.187759);
 
         mMap.addMarker(m1);
         //mMap.addMarker(m2);
         mMap.addMarker(m3);
-        mMap.addMarker(m4);
+        mMap.addMarker(m4);*/
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -181,14 +198,88 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
     }
 
+    public class retrieve_marker extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            loading2.startLoadingDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try
+            {
+                JsonParser o = new JsonParser();
+                result1 = o.insert(urlForMarkers);
+                model = new ArrayList<>();
+
+                JSONObject jsonObject = new JSONObject(result1);
+                JSONArray jsonArray = jsonObject.getJSONArray("res");
+
+                Log.v("test",""+result1);
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+
+                    JSONObject jsonObject11 = jsonArray.getJSONObject(i);
+                    marker_pojo p = new marker_pojo();
+
+                    p.setStop_name(jsonObject11.getString("stop_name"));
+                    p.setLatitude(jsonObject11.getString("latitude"));
+                    p.setLongitude(jsonObject11.getString("longitude"));
+
+                    //LatLng latLng = new LatLng(Double.parseDouble(p.getLatitude()), Double.parseDouble(p.getLongitude()));
+                    //mMap.addMarker(new MarkerOptions().position(latLng).title(p.getStop_name()));
+
+                    Log.d("test", "doInBackground: "+p.toString());
+                    model.add(p);
+
+                    //Log.d("test", "marker_model: "+model.toString());
+
+
+
+                }
+
+
+
+
+            }
+            catch ( JSONException e)
+            {
+                e.printStackTrace();
+                //  Toast.makeText(Login.this, "Please check your Internet Connection and Retry", Toast.LENGTH_LONG).show();
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            loading2.dismissDialog();
+
+            for (int i = 0; i < model.size() ; i++) {
+                Log.d("test", "marker_list: "+model.get(i).getLongitude());
+                LatLng latLng = new LatLng(Double.parseDouble(model.get(i).getLatitude()), Double.parseDouble(model.get(i).getLongitude()));
+                mMap.addMarker(new MarkerOptions().position(latLng).title(model.get(i).getStop_name()));
+            }
+        }
+
+
+    }
+
+
     public class retrieve extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-            loading.startLoadingDialog();
-         //   loadingDialog.startLoadingDialog();
+            loading1.startLoadingDialog();
+         //   loading1Dialog.startLoadingDialog();
         }
 
         @Override
@@ -233,7 +324,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            loading.dismissDialog();
+            loading1.dismissDialog();
             routesAdapter apt = new routesAdapter(MapsRoute.this,list);
             rcv.setAdapter(apt);
 

@@ -11,8 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.hrd.whereismybus.MapsActivity;
 import com.hrd.whereismybus.MapsRoute;
@@ -56,7 +58,7 @@ public class routesAdapter extends RecyclerView.Adapter<routesAdapter.myViewHold
 
 
         Picasso.get().load(p.getProfile()).into(holder.sim);
-        holder.start_route.setOnClickListener(new View.OnClickListener() {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 context.startActivity(new Intent(context, MapsActivity.class));
@@ -85,6 +87,7 @@ public class routesAdapter extends RecyclerView.Adapter<routesAdapter.myViewHold
         ImageButton start_route,phone_icon;
         ShapeableImageView start_location_icon,end_location_icon;
         View v;
+        MaterialCardView cardView;
 
 
         public myViewHolder(@NonNull View itemView) {
@@ -99,6 +102,8 @@ public class routesAdapter extends RecyclerView.Adapter<routesAdapter.myViewHold
             end_location_icon = (ShapeableImageView) itemView.findViewById(R.id.imageView4);
             phone_icon = (ImageButton) itemView.findViewById(R.id.imageView2);
             v = (View) itemView.findViewById(R.id.view);
+            cardView = (MaterialCardView) itemView.findViewById(R.id.cardView_route);
+
 
         }
     }
