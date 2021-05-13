@@ -2,6 +2,7 @@ package com.hrd.whereismybus.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,11 +54,20 @@ public class routesAdapter extends RecyclerView.Adapter<routesAdapter.myViewHold
         final String origin = p.getS_location();
         final String destination = p.getE_location();
 
+
         Picasso.get().load(p.getProfile()).into(holder.sim);
         holder.start_route.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 context.startActivity(new Intent(context, MapsActivity.class));
+            }
+        });
+        holder.phone_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_DIAL);
+                i.setData(Uri.parse("tel:"+p.getPhone_no()));
+                context.startActivity(i);
             }
         });
 
@@ -72,8 +82,8 @@ public class routesAdapter extends RecyclerView.Adapter<routesAdapter.myViewHold
 
         ShapeableImageView sim;
         TextView driver_name,phone_no,start_location,end_location;
-        ImageButton start_route;
-        ShapeableImageView start_location_icon,end_location_icon,phone_icon;
+        ImageButton start_route,phone_icon;
+        ShapeableImageView start_location_icon,end_location_icon;
         View v;
 
 
@@ -87,7 +97,7 @@ public class routesAdapter extends RecyclerView.Adapter<routesAdapter.myViewHold
             start_route = (ImageButton) itemView.findViewById(R.id.start_route_btn);
             start_location_icon = (ShapeableImageView) itemView.findViewById(R.id.imageView3);
             end_location_icon = (ShapeableImageView) itemView.findViewById(R.id.imageView4);
-            phone_icon = (ShapeableImageView) itemView.findViewById(R.id.imageView2);
+            phone_icon = (ImageButton) itemView.findViewById(R.id.imageView2);
             v = (View) itemView.findViewById(R.id.view);
 
         }

@@ -61,9 +61,9 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
     String routes_url;
     String result;
-
+    String driver_n_routes_url;
     String header;
-
+    LoadingWithAnim loading;
     private GoogleMap mMap;
     MarkerOptions sydney_marker_option, eva_marker_option, zoo_marker_option;
 
@@ -81,6 +81,8 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
         getPermission();
 
+        loading = new LoadingWithAnim(MapsRoute.this);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -93,15 +95,17 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         header = getString(R.string.header);
         routes_url = header + "user_login.php";
 
-        list = new ArrayList<>();
-        list.add(new route_pojo("Name 1", "+91 12345 67890", "Darbar Chokdi", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_45@2x.png"));
-        list.add(new route_pojo("Name 2", "+91 74125 89630", "Padra", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_44@2x.png"));
-        list.add(new route_pojo("Name 3", "+91 98745 61233", "Kalol", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_35@2x.png"));
-        list.add(new route_pojo("Name 4", "+91 32104 56987", "Waghodia", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_34@2x.png"));
+        driver_n_routes_url = header + "driver_n_routes.php";
+        new retrieve().execute();
+        //list = new ArrayList<>();
+        //list.add(new route_pojo("Name 1", "+91 12345 67890", "Darbar Chokdi", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_45@2x.png"));
+        //list.add(new route_pojo("Name 2", "+91 74125 89630", "Padra", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_44@2x.png"));
+        //list.add(new route_pojo("Name 3", "+91 98745 61233", "Kalol", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_35@2x.png"));
+        //list.add(new route_pojo("Name 4", "+91 32104 56987", "Waghodia", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_34@2x.png"));
 
 
-        routesAdapter apt = new routesAdapter(this, list);
-        rcv.setAdapter(apt);
+        //routesAdapter apt = new routesAdapter(this, list);
+        //rcv.setAdapter(apt);
 
     }
 
@@ -173,6 +177,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         protected void onPreExecute() {
             super.onPreExecute();
 
+            loading.startLoadingDialog();
          //   loadingDialog.startLoadingDialog();
         }
 
@@ -182,25 +187,26 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
             try
             {
                 JsonParser o = new JsonParser();
-                result = o.insert(routes_url);
-                //list = new ArrayList<>();
+                result = o.insert(driver_n_routes_url);
+                list = new ArrayList<>();
 
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("res");
 
-                Log.v("Login_DATA",""+result);
+                Log.v("test",""+result);
 
                 for (int i = 0; i < jsonArray.length(); i++) {
 
                     JSONObject jsonObject11 = jsonArray.getJSONObject(i);
                     route_pojo p = new route_pojo();
 
-                    p.setS_location(jsonObject11.getString("source"));
-                    p.setE_location(jsonObject11.getString("destination"));
-               /*   p.setProfile(jsonObject11.getString("password"));
-                    p.setPhone_no(jsonObject11.getString("password"));*/
-                    p.setName(jsonObject11.getString("routes_name"));
+                    p.setName(jsonObject11.getString("driver_name"));
+                    p.setPhone_no(jsonObject11.getString("driver_phone_no"));
+                    p.setS_location(jsonObject11.getString("driver_start_loc"));
+                    p.setE_location(jsonObject11.getString("driver_end_loc"));
+                    p.setProfile(jsonObject11.getString("driver_profile_pic"));
 
+                    Log.d("test", "doInBackground: "+p.toString());
                     list.add(p);
 
                 }
@@ -217,6 +223,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
+            loading.dismissDialog();
             routesAdapter apt = new routesAdapter(MapsRoute.this,list);
             rcv.setAdapter(apt);
 
