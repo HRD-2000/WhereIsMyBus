@@ -75,7 +75,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
     LocationRequest locationRequest;
     FusedLocationProviderClient fusedLocationProviderClient;
 
-
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
