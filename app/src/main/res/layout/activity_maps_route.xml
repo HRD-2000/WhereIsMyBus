@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
+   <!-- -->
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -17,12 +18,13 @@
     </fragment>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating"
+        android:id="@+id/user_floating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:src="@drawable/ic_twotone_directions_bus_24"
+        android:src="@drawable/ic_user_location_24"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints">

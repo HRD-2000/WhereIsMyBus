@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
@@ -41,6 +42,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hrd.whereismybus.Adapters.StopsAdapter;
 import com.hrd.whereismybus.Adapters.routesAdapter;
 import com.hrd.whereismybus.Pojo.Login_pojo;
@@ -58,7 +60,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
     RecyclerView rcv;
     List<route_pojo> list;
-
+    LatLng userLatLng;
     String routes_url;
     String result;
     String driver_n_routes_url;
@@ -66,7 +68,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
     LoadingWithAnim loading;
     private GoogleMap mMap;
     MarkerOptions sydney_marker_option, eva_marker_option, zoo_marker_option;
-
+    FloatingActionButton userLocationBtn;
     public static final int REQUEST_CHECK_SETTING = 101;
     public static final int REQUEST_CHECK_SETTING_1 = 102;
     private String[] permission = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
@@ -88,6 +90,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
+        userLocationBtn = findViewById(R.id.user_floating);
         rcv = findViewById(R.id.recyclerView);
         rcv.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
         rcv.setHasFixedSize(true);
@@ -106,6 +109,13 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
         //routesAdapter apt = new routesAdapter(this, list);
         //rcv.setAdapter(apt);
+
+        userLocationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng,16));
+            }
+        });
 
     }
 
@@ -159,8 +169,8 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,16));
+                userLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng,16));
             }
         });
 
