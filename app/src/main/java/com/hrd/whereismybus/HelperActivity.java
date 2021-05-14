@@ -40,6 +40,7 @@ public class HelperActivity extends AppCompatActivity {
 
         getPermission();
     }
+    //
 
     private void getPermission() {
 
