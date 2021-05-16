@@ -10,6 +10,9 @@
     sothree:umanoPanelHeight="120dp"
     sothree:umanoOverlay="true"
     sothree:umanoShadowHeight="4dp"
+
+    sothree:unamoClipPanel = "false"
+
     tools:context=".MapsActivity">
 
 

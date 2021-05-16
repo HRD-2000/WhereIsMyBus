@@ -1,8 +1,11 @@
 package com.hrd.whereismybus.Pojo;
 
+import android.content.Intent;
+
 public class route_pojo {
 
     String Name,phone_no,s_location,e_location,profile;
+    Integer Route_id;
 
     public route_pojo(String name, String phone_no, String s_location, String e_location, String profile) {
         Name = name;
@@ -10,6 +13,14 @@ public class route_pojo {
         this.s_location = s_location;
         this.e_location = e_location;
         this.profile = profile;
+    }
+
+    public Integer getRoute_id() {
+        return Route_id;
+    }
+
+    public void setRoute_id(Integer route_id) {
+        Route_id = route_id;
     }
 
     public route_pojo() {

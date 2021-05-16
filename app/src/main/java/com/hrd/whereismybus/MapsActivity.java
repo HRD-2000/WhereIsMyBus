@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,11 +40,17 @@ import com.google.firebase.database.ValueEventListener;
 import com.hrd.whereismybus.Adapters.StopsAdapter;
 import com.hrd.whereismybus.Adapters.routesAdapter;
 import com.hrd.whereismybus.Network.Internet;
+import com.hrd.whereismybus.Pojo.marker_pojo;
 import com.hrd.whereismybus.Pojo.route_pojo;
 import com.hrd.whereismybus.Pojo.stops_pojo;
 import com.hrd.whereismybus.directionhelpers.FetchURL;
 import com.hrd.whereismybus.directionhelpers.TaskLoadedCallback;
 import com.hrd.whereismybus.distancematrixhelper.GetDistancesData;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     DatabaseReference databaseReference;
     Timer timer;
     int cam;
-//    FloatingActionButton floatingActionButton;
+//  FloatingActionButton floatingActionButton;
     Location location1,location2;
     private MarkerOptions place1, place2;
     private Polyline currentPolyline;
@@ -86,6 +93,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     MarkerOptions m1,m2,m3,m4;
     LatLng pos1,pos2,pos3,pos4;
 
+    SlidingUpPanelLayout sliding_layout;
+
+    String routes_url;
+    String result;
+    String header;
+    Integer route_id;
+    List<marker_pojo> model;
+
+   LoadingWithAnim loading_progress_bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,16 +123,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         rcv.setAdapter(apt);*/
         btn = findViewById(R.id.appCompatButton);
         recyclerView = findViewById(R.id.recyclerView_routes);
+
+        sliding_layout = findViewById(R.id.sliding_layout);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setHasFixedSize(true);
+
+        Intent intent = getIntent();
+        route_id = intent.getIntExtra("Route_id",0);
+
+        header = getString(R.string.header);
+        routes_url = header + "stops_retrieve.php?route_id="+route_id;
+        new retrieve_marker().execute();
 
         list = new ArrayList<>();
         list.add(new stops_pojo("Darbar Chokdi",01));
         list.add(new stops_pojo("Eva Mall",02));
         list.add(new stops_pojo("Tulsidham",03));
         list.add(new stops_pojo("VIER",04));
-
-
 
         adapter = new StopsAdapter(MapsActivity.this,list);
         recyclerView.setAdapter(adapter);
@@ -282,8 +306,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
         valueAnimator.start();*/
 
-
-
         /*for (int i = 10; i <=100 ; i++) {
             //if(i%2==0)
             //{
@@ -297,9 +319,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         
         //markerOptions.rotation(location.getBearing());
 
-
-
-
         if(cam == 1) {
             updatecamera(latLng);
             cam = 0;
@@ -312,7 +331,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private String getDistanceUrl(double startLat,double startLng,double endLat,double endLng) {
-
 
         StringBuilder googleDistanceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/distancematrix/json?");
         googleDistanceUrl.append("origins="+startLat+","+startLng);
@@ -356,9 +374,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void updatecamera(LatLng latLng) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-
-
-
     }
 
     @Override
@@ -468,10 +483,77 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(!internet.isNetworkAvailable()) {
             Toast.makeText(this,"No Internet",Toast.LENGTH_SHORT).show();
         }
-
     }
 
+    public class retrieve_marker extends AsyncTask<Void,Void,Void> {
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            loading_progress_bar.startLoadingDialog();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try
+            {
+                JsonParser o = new JsonParser();
+                result = o.insert(routes_url);
+                model = new ArrayList<>();
+
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray jsonArray = jsonObject.getJSONArray("res");
+
+                Log.v("test",""+result);
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+
+                    JSONObject jsonObject11 = jsonArray.getJSONObject(i);
+                    marker_pojo p = new marker_pojo();
+
+                    p.setStop_name(jsonObject11.getString("stop_name"));
+                    p.setLatitude(jsonObject11.getString("latitude"));
+                    p.setLongitude(jsonObject11.getString("longitude"));
+
+                    //LatLng latLng = new LatLng(Double.parseDouble(p.getLatitude()), Double.parseDouble(p.getLongitude()));
+                    //mMap.addMarker(new MarkerOptions().position(latLng).title(p.getStop_name()));
+
+                    Log.d("test", "doInBackground: "+p.toString());
+                    model.add(p);
+
+                    //Log.d("test", "marker_model: "+model.toString());
+
+                }
+
+
+
+
+            }
+            catch ( JSONException e)
+            {
+                e.printStackTrace();
+                //  Toast.makeText(Login.this, "Please check your Internet Connection and Retry", Toast.LENGTH_LONG).show();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            loading_progress_bar.dismissDialog();
+
+            for (int i = 0; i < model.size() ; i++) {
+                Log.d("test", "marker_list: "+model.get(i).getLongitude());
+                LatLng latLng = new LatLng(Double.parseDouble(model.get(i).getLatitude()), Double.parseDouble(model.get(i).getLongitude()));
+                mMap.addMarker(new MarkerOptions().position(latLng).title(model.get(i).getStop_name()+" db"));
+            }
+        }
+
+
+    }
 
 }
 

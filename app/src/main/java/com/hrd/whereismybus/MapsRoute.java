@@ -113,7 +113,6 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         //list.add(new route_pojo("Name 3", "+91 98745 61233", "Kalol", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_35@2x.png"));
         //list.add(new route_pojo("Name 4", "+91 32104 56987", "Waghodia", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_34@2x.png"));
 
-
         //routesAdapter apt = new routesAdapter(this, list);
         //rcv.setAdapter(apt);
 
@@ -123,8 +122,6 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng,16));
             }
         });
-
-
 
 
         /*for (int i = 0; i < model.size() ; i++) {
@@ -237,8 +234,6 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
                     //Log.d("test", "marker_model: "+model.toString());
 
-
-
                 }
 
 
@@ -271,7 +266,6 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
 
     }
 
-
     public class retrieve extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -301,6 +295,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
                     JSONObject jsonObject11 = jsonArray.getJSONObject(i);
                     route_pojo p = new route_pojo();
 
+                    p.setRoute_id(jsonObject11.getInt("route_id"));
                     p.setName(jsonObject11.getString("driver_name"));
                     p.setPhone_no(jsonObject11.getString("driver_phone_no"));
                     p.setS_location(jsonObject11.getString("driver_start_loc"));
@@ -390,9 +385,6 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
                 }
             }
         });
-
-
-
 
     }
 

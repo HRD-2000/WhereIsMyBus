@@ -56,12 +56,15 @@ public class routesAdapter extends RecyclerView.Adapter<routesAdapter.myViewHold
         final String origin = p.getS_location();
         final String destination = p.getE_location();
 
+        Integer route_id = p.getRoute_id();
 
         Picasso.get().load(p.getProfile()).into(holder.sim);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, MapsActivity.class));
+                Intent intent = new Intent(context, MapsActivity.class);
+                intent.putExtra("Route_id",route_id);
+                context.startActivity(intent);
             }
         });
         holder.phone_icon.setOnClickListener(new View.OnClickListener() {
