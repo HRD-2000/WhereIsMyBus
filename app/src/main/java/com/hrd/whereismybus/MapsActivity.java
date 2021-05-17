@@ -2,6 +2,8 @@ package com.hrd.whereismybus;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -82,7 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Intent i;
     String locationv1;
     //List<route_pojo> list;
-    AppCompatButton btn;
+    AppCompatButton ImInbtn;
     double startLat,startLng,endLat,endLng;
     Object[] dataTransfer;
     String url_distance;
@@ -127,7 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         routesAdapter apt = new routesAdapter(this,list);
         rcv.setAdapter(apt);*/
-        btn = findViewById(R.id.appCompatButton);
+        ImInbtn = findViewById(R.id.appCompatButton);
         recyclerView = findViewById(R.id.recyclerView_routes);
 
         sliding_layout = findViewById(R.id.sliding_layout);
@@ -159,17 +162,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         endLat = 22.4076018;
         endLng = 73.306419;
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        ImInbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dataTransfer = new Object[3];
-                url_distance = getDistanceUrl(startLat,startLng,endLat,endLng);
-                GetDistancesData getDistancesData = new GetDistancesData();
-                dataTransfer[0] = mMap;
-                dataTransfer[1] = url_distance;
-                dataTransfer[2] = new LatLng(endLat,endLng);
 
-                getDistancesData.execute(dataTransfer);
+                AlertDialog.Builder adb = new AlertDialog.Builder(MapsActivity.this);
+                adb.setTitle("Are you Boarded??\n It will help others to know the bus actual location.");
+
+                // set the custom layout
+                adb.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        imIN = true;
+                        ImInbtn.setEnabled(false);
+                    }
+                });
+                adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                // create and show
+                // the alert dialog
+                AlertDialog dialog = adb.create();
+                dialog.show();
+
             }
         });
 
