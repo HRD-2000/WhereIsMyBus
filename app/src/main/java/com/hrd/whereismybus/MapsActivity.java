@@ -575,12 +575,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Integer im;
 
-        for ( im = model.size()-2; im >= 1 ; im--) {
+        for ( im = 1; im <= model.size()-2 ; im++) { //im = model.size()-2; im >= 1 ; im--
 
-            if(im == 1){
+            if(im == model.size()-2){ //1
                 wayPoints = wayPoints + ""+model.get(im).getLatitude()+","+model.get(im).getLongitude();
             }else {
-                wayPoints = wayPoints + ""+model.get(im).getLatitude()+","+model.get(im).getLongitude() + " | ";
+                wayPoints = wayPoints + ""+model.get(im).getLatitude()+","+model.get(im).getLongitude() + "|";
             }
 
         }
