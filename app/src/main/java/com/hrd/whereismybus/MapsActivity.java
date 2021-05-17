@@ -564,18 +564,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public String wayPoints(){
 
         Toast.makeText(this, "method call", Toast.LENGTH_SHORT).show();
-        Log.v("Model_size",""+model.size());
 
         Integer im;
 
-        for ( im = model.size()-1; im <= 1 ; im--) {
+        for ( im = model.size()-1; im >= 1 ; im--) {
 
-            Log.v("Model_size","For loop call "+im);
-
-            if(im != 1){
+            if(im == 1){
                 wayPoints = wayPoints + ""+model.get(im).getLatitude()+","+model.get(im).getLongitude();
             }else {
-                wayPoints = wayPoints + ""+model.get(im).getLatitude()+","+model.get(im).getLongitude() + "| ";
+                wayPoints = wayPoints + ""+model.get(im).getLatitude()+","+model.get(im).getLongitude() + " | ";
             }
 
         }
