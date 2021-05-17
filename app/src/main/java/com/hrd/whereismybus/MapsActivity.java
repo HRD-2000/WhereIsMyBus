@@ -264,8 +264,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("URL", "place2My: "+place2);
     }
 
-    void location(String pre_Lat, String pre_Lang,String nextLat, String nextLang)
-    {
+    void location(String pre_Lat, String pre_Lang,String nextLat, String nextLang) {
+
         Double latitude = Double.valueOf(nextLat).doubleValue();
         Double longitude = Double.valueOf(nextLang).doubleValue();
 
@@ -375,10 +375,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         return bearing;
     }
+
     public void updatecamera(LatLng latLng) {
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+
+        getDistanceUrl(latLng.latitude,latLng.longitude,Double.parseDouble(model.get(model.size()-1).getLatitude()),Double.parseDouble(model.get(model.size()-1).getLongitude()));
     }
 
     @Override
@@ -571,8 +574,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public String wayPoints(){
-
-        Toast.makeText(this, "method call", Toast.LENGTH_SHORT).show();
 
         Integer im;
 
