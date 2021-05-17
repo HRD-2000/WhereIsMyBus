@@ -101,6 +101,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Integer route_id;
     List<marker_pojo> model;
 
+    String wayPoints;
+
    LoadingWithAnim loading_progress_bar;
 
     @Override
@@ -527,8 +529,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
 
-
-
             }
             catch ( JSONException e)
             {
@@ -550,10 +550,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng latLng = new LatLng(Double.parseDouble(model.get(i).getLatitude()), Double.parseDouble(model.get(i).getLongitude()));
                 mMap.addMarker(new MarkerOptions().position(latLng).title(model.get(i).getStop_name()+" db"));
             }
+
+            wayPoints();
+
         }
 
-
     }
+
+    public String wayPoints(){
+
+        for (int i = model.size()-1; i <= 1 ; i--) {
+
+            if(i == 1){
+                wayPoints = wayPoints + ""+model.get(i).getLatitude()+","+model.get(i).getLongitude();
+            }else {
+                wayPoints = wayPoints + ""+model.get(i).getLatitude()+","+model.get(i).getLongitude() + "| ";
+            }
+
+        }
+        Log.v("WayPoints",""+wayPoints);
+        return wayPoints;
+    }
+
 
 }
 
