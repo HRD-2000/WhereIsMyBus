@@ -13,7 +13,7 @@ public class DistanceMatrix {
     Object[] dataTransfer;
     String url;
 
-    public DistanceMatrix(GoogleMap mMap, double startLat, double startLng, double endLat, double endLng) {
+    public DistanceMatrix(Context context,GoogleMap mMap, double startLat, double startLng, double endLat, double endLng) {
         this.mMap = mMap;
         this.startLat = startLat;
         this.startLng = startLng;
@@ -26,6 +26,7 @@ public class DistanceMatrix {
         dataTransfer[0] = mMap;
         dataTransfer[1] = url;
         dataTransfer[2] = new LatLng(endLat,endLng);
+        dataTransfer[3] = context;
 
         getDistancesData.execute(dataTransfer);
 

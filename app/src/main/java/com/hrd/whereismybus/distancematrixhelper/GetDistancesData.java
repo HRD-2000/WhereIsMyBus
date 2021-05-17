@@ -37,6 +37,7 @@ public class GetDistancesData extends AsyncTask<Object,String,String> {
        mMap = (GoogleMap) objects[0];
        url = (String) objects[1];
        latLng = (LatLng) objects[2];
+       context = (Context) objects[3];
 
         try {
             // Fetching the data from web service

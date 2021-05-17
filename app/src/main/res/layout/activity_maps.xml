@@ -11,9 +11,6 @@
     sothree:umanoPanelHeight="120dp"
     sothree:umanoOverlay="true"
     sothree:umanoShadowHeight="4dp"
-
-
-
     tools:context=".MapsActivity">
 
     <!-- -->
