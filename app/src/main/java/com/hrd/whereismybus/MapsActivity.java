@@ -363,6 +363,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Toast.makeText(MapsActivity.this, "Latitude is: " + latitude + ", Longitude is " + longitude, Toast.LENGTH_SHORT).show();
 
+        if(done == true)
+        {
+            if (imIN) {
+                new DistanceMatrix(MapsActivity.this, mMap, latLng.latitude, latLng.longitude, Double.parseDouble(model.get(model.size() - 1).getLatitude()), Double.parseDouble(model.get(model.size() - 1).getLongitude()));
+            } else if(!imIN){
+                new DistanceMatrix(MapsActivity.this,mMap,userlat,userLng,Double.parseDouble(model.get(model.size() - 1).getLatitude()), Double.parseDouble(model.get(model.size() - 1).getLongitude()));
+            }
+        }
+
     }
 
     private String getDistanceUrl(double startLat, double startLng, double endLat, double endLng) {
@@ -413,13 +422,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
         done = true;
-
-        if (imIN) {
-            new DistanceMatrix(MapsActivity.this, mMap, latLng.latitude, latLng.longitude, Double.parseDouble(model.get(model.size() - 1).getLatitude()), Double.parseDouble(model.get(model.size() - 1).getLongitude()));
-        } else if(!imIN){
-            new DistanceMatrix(MapsActivity.this,mMap,userlat,userLng,Double.parseDouble(model.get(model.size() - 1).getLatitude()), Double.parseDouble(model.get(model.size() - 1).getLongitude()));
-        }
-
     }
 
     @Override
