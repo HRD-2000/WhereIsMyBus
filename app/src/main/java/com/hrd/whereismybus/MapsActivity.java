@@ -19,10 +19,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -34,6 +37,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -70,31 +75,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     DatabaseReference databaseReference;
     Timer timer;
     int cam;
-//  FloatingActionButton floatingActionButton;
-    Location location1,location2;
+    //  FloatingActionButton floatingActionButton;
+    Location location1, location2;
     private MarkerOptions place1, place2;
     private Polyline currentPolyline;
     ValueAnimator polyAnimator;
     Boolean camera = true;
     Boolean alreadyexecuted = false;
     Boolean flag = false;
-    String lastLat,lastLng;
-    String newLat,newLng;
+    String lastLat, lastLng;
+    String newLat, newLng;
     private float v;
-    Double vLat,vLng;
+    Double vLat, vLng;
     Intent i;
     String locationv1;
     //List<route_pojo> list;
     AppCompatButton ImInbtn;
-    double startLat,startLng,endLat,endLng;
+    double startLat, startLng, endLat, endLng;
     Object[] dataTransfer;
     String url_distance;
 
     StopsAdapter adapter;
     RecyclerView recyclerView;
     ArrayList<stops_pojo> list;
-    MarkerOptions m1,m2,m3,m4;
-    LatLng pos1,pos2,pos3,pos4;
+    MarkerOptions m1, m2, m3, m4;
+    LatLng pos1, pos2, pos3, pos4;
 
     SlidingUpPanelLayout sliding_layout;
 
@@ -104,11 +109,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Integer route_id;
     List<marker_pojo> model;
 
-    String wayPoints="";
-
-   LoadingWithAnim loading_progress_bar;
-
-   Boolean imIN = false;
+    String wayPoints = "";
+    Double userlat,userLng;
+    LoadingWithAnim loading_progress_bar;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    Boolean imIN = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +121,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         loading_progress_bar = new LoadingWithAnim(MapsActivity.this);
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
 
       /*  rcv = findViewById(R.id.recyclerView);
         rcv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
@@ -139,10 +146,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         recyclerView.setHasFixedSize(true);
 
         Intent intent = getIntent();
-        route_id = intent.getIntExtra("Route_id",0);
+        route_id = intent.getIntExtra("Route_id", 0);
 
         header = getString(R.string.header);
-        routes_url = header + "stops_retrieve.php?route_id="+route_id;
+        routes_url = header + "stops_retrieve.php?route_id=" + route_id;
         new retrieve_marker().execute();
 
      /*   list = new ArrayList<>();
@@ -167,10 +174,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
 
                 AlertDialog.Builder adb = new AlertDialog.Builder(MapsActivity.this);
-                adb.setTitle("Are you Boarded??\n It will help others to know the bus actual location.");
+                adb.setTitle("Are you Boarded??\nIt will help others to know \nthe bus actual location.");
 
                 // set the custom layout
-                adb.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+                adb.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         imIN = true;
@@ -192,7 +199,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
- //       floatingActionButton = findViewById(R.id.floating);
+        //       floatingActionButton = findViewById(R.id.floating);
 
         chechInternet();
 
@@ -206,7 +213,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });*/
 
-         cam = 1;
+        cam = 1;
 
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -225,11 +232,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void onLocationChanged()
-    {
+    public void onLocationChanged() {
         final Handler h = new Handler();
-        h.postDelayed(new Runnable()
-        {
+        h.postDelayed(new Runnable() {
             //private long time = 0;
             @Override
             public void run() {
@@ -239,27 +244,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 h.postDelayed(this, 5000);
             }
-        },5000);
+        }, 5000);
     }
 
-    void ReciveLocationFromFirebase()
-    {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Route "+route_id);
+    void ReciveLocationFromFirebase() {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Route " + route_id);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 String lat = dataSnapshot.child("latitude").getValue().toString();
                 String lang = dataSnapshot.child("longitude").getValue().toString();
-               // callTimer(lat,lang);
-                if(flag == false){
+                // callTimer(lat,lang);
+                if (flag == false) {
                     Log.d("test", "onDataChange: in flag if block");
                     lastLat = lat;
                     lastLng = lang;
                     newLat = lat;
                     newLng = lang;
                     flag = true;
-                }else{
+                } else {
                     lastLat = newLat;
                     lastLng = newLng;
                     newLat = lat;
@@ -270,8 +274,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startLng = Double.valueOf(lang);
 
 
-
-                location(lastLat,lastLng,newLat,newLng);
+                location(lastLat, lastLng, newLat, newLng);
             }
 
             @Override
@@ -280,12 +283,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
-    void place2My(MarkerOptions m2){
+
+    void place2My(MarkerOptions m2) {
         place2 = m2;
-        Log.d("URL", "place2My: "+place2);
+        Log.d("URL", "place2My: " + place2);
     }
 
-    void location(String pre_Lat, String pre_Lang,String nextLat, String nextLang) {
+    void location(String pre_Lat, String pre_Lang, String nextLat, String nextLang) {
 
         Double latitude = Double.valueOf(nextLat).doubleValue();
         Double longitude = Double.valueOf(nextLang).doubleValue();
@@ -299,8 +303,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (marker != null) {
             marker.setPosition(latLng);
             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
-        }
-        else {
+        } else {
             marker = mMap.addMarker(markerOptions);
         }
 
@@ -342,10 +345,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }*/
 
         Location location = new Location(String.valueOf(latLng));
-        
+
         //markerOptions.rotation(location.getBearing());
 
-        if(cam == 1) {
+        if (cam == 1) {
             updatecamera(latLng);
             cam = 0;
         }
@@ -356,26 +359,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private String getDistanceUrl(double startLat,double startLng,double endLat,double endLng) {
+    private String getDistanceUrl(double startLat, double startLng, double endLat, double endLng) {
 
         StringBuilder googleDistanceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/distancematrix/json?");
-        googleDistanceUrl.append("origins="+startLat+","+startLng);
-        googleDistanceUrl.append("&destinations="+endLat+","+endLng);
-        googleDistanceUrl.append("&key="+"AIzaSyD1oGZ67zz1tNv3OQh_UlRA_CC6tOFd7nM");
+        googleDistanceUrl.append("origins=" + startLat + "," + startLng);
+        googleDistanceUrl.append("&destinations=" + endLat + "," + endLng);
+        googleDistanceUrl.append("&key=" + "AIzaSyD1oGZ67zz1tNv3OQh_UlRA_CC6tOFd7nM");
 
-        Log.d("test", "getDistanceUrl: "+googleDistanceUrl.toString());
+        Log.d("test", "getDistanceUrl: " + googleDistanceUrl.toString());
 
         return googleDistanceUrl.toString();
     }
 
-    public double calculate_bearing(LatLng previous_latlong, LatLng current_latlong){
+
+    public double calculate_bearing(LatLng previous_latlong, LatLng current_latlong) {
        /* LatLng start = new LatLng(22.273225, 73.182623 );
         LatLng end = new LatLng(22.273355, 73.182526);*/
 
         LatLng start = previous_latlong;
         LatLng end = current_latlong;
 
-        Double lat1,lat2,long1,long2;
+        Double lat1, lat2, long1, long2;
 
         lat1 = Math.toRadians(start.latitude);
         long1 = Math.toRadians(start.longitude);
@@ -384,15 +388,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         long2 = Math.toRadians(end.longitude);
 
         double dL = (end.longitude - start.longitude);
-        Log.d("test", "dL : "+dL+"\nsin(dL) :"+sin(4.38101)+","+sin(4.381010000000003));
+        Log.d("test", "dL : " + dL + "\nsin(dL) :" + sin(4.38101) + "," + sin(4.381010000000003));
         double temp = Math.toRadians(dL);
-        Log.d("test", "sin(x): "+sin(temp));
+        Log.d("test", "sin(x): " + sin(temp));
         double X = cos(lat2) * sin(temp);
-        Log.d("test", "X= "+cos(lat2)+"*"+sin(temp)+"="+X);
-        Double Y = cos(lat1)*sin(lat2) - sin(lat1)*cos(lat2) * cos(temp);
-        Log.d("test", "Y= "+cos(lat1)+""+sin(lat2)+" - "+sin(lat1)+""+cos(lat2)+" * " + cos(temp)+" = "+Y);
-        double bearing = Math.toDegrees(Math.atan2(X,Y));
-        Log.d("test", "bearing in radians : "+Math.atan2(X,Y)+"\nbearing in degree : "+bearing);
+        Log.d("test", "X= " + cos(lat2) + "*" + sin(temp) + "=" + X);
+        Double Y = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(temp);
+        Log.d("test", "Y= " + cos(lat1) + "" + sin(lat2) + " - " + sin(lat1) + "" + cos(lat2) + " * " + cos(temp) + " = " + Y);
+        double bearing = Math.toDegrees(Math.atan2(X, Y));
+        Log.d("test", "bearing in radians : " + Math.atan2(X, Y) + "\nbearing in degree : " + bearing);
 
         return bearing;
     }
@@ -402,10 +406,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
-        if(imIN){
-            new DistanceMatrix(MapsActivity.this,mMap,latLng.latitude,latLng.longitude,Double.parseDouble(model.get(model.size()-1).getLatitude()),Double.parseDouble(model.get(model.size()-1).getLongitude()));
-        }else{
-           // new DistanceMatrix(MapsActivity.this,mMap,current_lat,current_long,latLng.latitude,latLng.longitude);
+        if (imIN) {
+            new DistanceMatrix(MapsActivity.this, mMap, latLng.latitude, latLng.longitude, Double.parseDouble(model.get(model.size() - 1).getLatitude()), Double.parseDouble(model.get(model.size() - 1).getLongitude()));
+        } else if(!imIN){
+            new DistanceMatrix(MapsActivity.this,mMap,userlat,userLng,Double.parseDouble(model.get(model.size() - 1).getLatitude()), Double.parseDouble(model.get(model.size() - 1).getLongitude()));
         }
 
     }
@@ -433,6 +437,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .bearing(30)
                 .tilt(45)
                 .build()));*/
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                userlat = location.getLatitude();
+                userLng = location.getLongitude();
+            }
+        });
 
         m1 = new MarkerOptions().position(new LatLng(22.273372,73.182706));
         m2 = new MarkerOptions().position(new LatLng(22.272672,73.187759)).title("Eva The Mall");

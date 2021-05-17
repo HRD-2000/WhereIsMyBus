@@ -52,14 +52,14 @@ public class HelperActivity extends AppCompatActivity {
             }else {
                 Toast.makeText(this, "Permission Granted already 1", Toast.LENGTH_SHORT).show();
                 getTurnOnGps();
-                startActivity(new Intent(HelperActivity.this,MapsRoute.class));
-                finish();
+                //startActivity(new Intent(HelperActivity.this,MapsRoute.class));
+                //finish();
             }
         }else {
             Toast.makeText(this, "Permission Granted already 2", Toast.LENGTH_SHORT).show();
             getTurnOnGps();
-            startActivity(new Intent(HelperActivity.this,MapsRoute.class));
-            finish();
+            //startActivity(new Intent(HelperActivity.this,MapsRoute.class));
+            //finish();
 
         }
     }

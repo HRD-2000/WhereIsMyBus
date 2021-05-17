@@ -32,6 +32,8 @@ public class GetDistancesData extends AsyncTask<Object,String,String> {
     TextView distance_tv,duration_tv;
 
 
+
+
     @Override
     protected String doInBackground(Object... objects) {
        mMap = (GoogleMap) objects[0];
