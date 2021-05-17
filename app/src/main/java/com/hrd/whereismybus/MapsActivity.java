@@ -376,8 +376,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return bearing;
     }
     public void updatecamera(LatLng latLng) {
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
     }
 
     @Override
