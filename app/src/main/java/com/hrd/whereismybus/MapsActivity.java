@@ -108,6 +108,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        loading_progress_bar = new LoadingWithAnim(MapsActivity.this);
+
       /*  rcv = findViewById(R.id.recyclerView);
         rcv.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
         rcv.setHasFixedSize(true);
@@ -219,7 +221,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     void ReciveLocationFromFirebase()
     {
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Current Location");
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Route "+route_id);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
