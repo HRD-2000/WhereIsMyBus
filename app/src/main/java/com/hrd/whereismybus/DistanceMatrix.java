@@ -20,7 +20,7 @@ public class DistanceMatrix {
         this.endLat = endLat;
         this.endLng = endLng;
 
-        dataTransfer = new Object[3];
+        dataTransfer = new Object[4];
         url = getDistanceUrl(startLat,startLng,endLat,endLng);
         GetDistancesData  getDistancesData = new GetDistancesData();
         dataTransfer[0] = mMap;
