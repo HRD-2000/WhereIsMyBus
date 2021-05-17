@@ -105,6 +105,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
    LoadingWithAnim loading_progress_bar;
 
+   Boolean imIN = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -381,9 +383,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
-        new DistanceMatrix(MapsActivity.this,mMap,latLng.latitude,latLng.longitude,Double.parseDouble(model.get(model.size()-1).getLatitude()),Double.parseDouble(model.get(model.size()-1).getLongitude()));
+        if(imIN){
+            new DistanceMatrix(MapsActivity.this,mMap,latLng.latitude,latLng.longitude,Double.parseDouble(model.get(model.size()-1).getLatitude()),Double.parseDouble(model.get(model.size()-1).getLongitude()));
+        }else{
+           // new DistanceMatrix(MapsActivity.this,mMap,current_lat,current_long,latLng.latitude,latLng.longitude);
+        }
 
-       // getDistanceUrl(latLng.latitude,latLng.longitude,Double.parseDouble(model.get(model.size()-1).getLatitude()),Double.parseDouble(model.get(model.size()-1).getLongitude()));
     }
 
     @Override
@@ -483,7 +488,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             currentPolyline.remove();
         }
         currentPolyline = mMap.addPolyline((PolylineOptions) values[0]);
-
     }
 
     public void chechInternet(){
