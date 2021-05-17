@@ -101,7 +101,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Integer route_id;
     List<marker_pojo> model;
 
-    String wayPoints;
+    String wayPoints="";
 
    LoadingWithAnim loading_progress_bar;
 
@@ -428,7 +428,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
-        LatLng zoo = new LatLng(22.3115, 73.1914);
+   /*     LatLng zoo = new LatLng(22.3115, 73.1914);
         LatLng eva = new LatLng(22.2734, 73.1888 );
 
         MarkerOptions zoo_marker_option = new MarkerOptions().position(zoo).title("Darbar Chowkdi");
@@ -441,11 +441,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(m3);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(eva));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(eva, 13));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(eva, 13));*/
 
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        new FetchURL(MapsActivity.this).execute(getUrl(zoo_marker_option.getPosition(), eva_marker_option.getPosition(), "driving"),"driving");
+     //   new FetchURL(MapsActivity.this).execute(getUrl(zoo_marker_option.getPosition(), eva_marker_option.getPosition(), "driving"),"driving");
 
 
     }
@@ -530,7 +530,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 }
 
-
             }
             catch ( JSONException e)
             {
@@ -554,26 +553,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
             wayPoints();
-
         }
 
     }
 
     public String wayPoints(){
 
-        for (int i = model.size()-1; i <= 1 ; i--) {
+        Toast.makeText(this, "method call", Toast.LENGTH_SHORT).show();
+        Log.v("Model_size",""+model.size());
 
-            if(i == 1){
-                wayPoints = wayPoints + ""+model.get(i).getLatitude()+","+model.get(i).getLongitude();
+        Integer im;
+
+        for ( im = model.size()-1; im <= 1 ; im--) {
+
+            Log.v("Model_size","For loop call "+i);
+
+            if(im != 1){
+                wayPoints = wayPoints + ""+model.get(im).getLatitude()+","+model.get(im).getLongitude();
             }else {
-                wayPoints = wayPoints + ""+model.get(i).getLatitude()+","+model.get(i).getLongitude() + "| ";
+                wayPoints = wayPoints + ""+model.get(im).getLatitude()+","+model.get(im).getLongitude() + "| ";
             }
 
         }
         Log.v("WayPoints",""+wayPoints);
         return wayPoints;
     }
-
-
 }
 
