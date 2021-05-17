@@ -107,6 +107,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
         new retrieve_marker().execute();
 
 
+
         //list = new ArrayList<>();
         //list.add(new route_pojo("Name 1", "+91 12345 67890", "Darbar Chokdi", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_45@2x.png"));
         //list.add(new route_pojo("Name 2", "+91 74125 89630", "Padra", "VIER", "https://chromeunboxed.com/wp-content/uploads/2017/08/IDR_LOGIN_DEFAULT_USER_44@2x.png"));
@@ -295,7 +296,7 @@ public class MapsRoute extends FragmentActivity implements OnMapReadyCallback {
                     JSONObject jsonObject11 = jsonArray.getJSONObject(i);
                     route_pojo p = new route_pojo();
 
-                    p.setRoute_id(jsonObject11.getInt("route_id"));
+                    p.setRoute_id(jsonObject11.getInt("driver_id"));
                     p.setName(jsonObject11.getString("driver_name"));
                     p.setPhone_no(jsonObject11.getString("driver_phone_no"));
                     p.setS_location(jsonObject11.getString("driver_start_loc"));
