@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hrd.whereismybus.MapsActivity;
 import com.hrd.whereismybus.MapsRoute;
+import com.hrd.whereismybus.Pojo.marker_pojo;
 import com.hrd.whereismybus.R;
 import com.hrd.whereismybus.Pojo.stops_pojo;
 
@@ -25,7 +26,8 @@ public class StopsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     Integer stop_no;
     Context context;
-    List<stops_pojo> list;
+    List<stops_pojo> list2;
+    List<marker_pojo> list;
 
     public static int stop1 = 1;
     public static int stop2 = 2;
@@ -42,7 +44,12 @@ public class StopsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.stop_name = stop_name;
     }*/
 
-    public StopsAdapter(MapsActivity context, List<stops_pojo> list){
+/*    public StopsAdapter(MapsActivity context, List<stops_pojo> list2){
+        this.context = context;
+        this.list2 = list2;
+    }*/
+
+    public StopsAdapter(MapsActivity context, List<marker_pojo> list){
         this.context = context;
         this.list = list;
     }

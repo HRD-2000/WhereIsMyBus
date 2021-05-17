@@ -140,14 +140,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         routes_url = header + "stops_retrieve.php?route_id="+route_id;
         new retrieve_marker().execute();
 
-        list = new ArrayList<>();
+     /*   list = new ArrayList<>();
         list.add(new stops_pojo("Darbar Chokdi",01));
         list.add(new stops_pojo("Eva Mall",02));
         list.add(new stops_pojo("Tulsidham",03));
         list.add(new stops_pojo("VIER",04));
 
         adapter = new StopsAdapter(MapsActivity.this,list);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);*/
 
         i = getIntent();
         locationv1 = i.getStringExtra("locationResult");
@@ -516,6 +516,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     JSONObject jsonObject11 = jsonArray.getJSONObject(i);
                     marker_pojo p = new marker_pojo();
 
+                    p.setStop_no(jsonObject11.getInt("stop_no"));
                     p.setStop_name(jsonObject11.getString("stop_name"));
                     p.setLatitude(jsonObject11.getString("latitude"));
                     p.setLongitude(jsonObject11.getString("longitude"));
@@ -551,6 +552,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng latLng = new LatLng(Double.parseDouble(model.get(i).getLatitude()), Double.parseDouble(model.get(i).getLongitude()));
                 mMap.addMarker(new MarkerOptions().position(latLng).title(model.get(i).getStop_name()+" db"));
             }
+
+            adapter = new StopsAdapter(MapsActivity.this,model);
+            recyclerView.setAdapter(adapter);
 
             wayPoints();
         }

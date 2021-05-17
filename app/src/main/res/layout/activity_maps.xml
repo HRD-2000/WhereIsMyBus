@@ -28,9 +28,10 @@
     </fragment>
 
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/slider_background">
 
 
@@ -53,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:fontFamily="@font/product_sans_regular"
-            android:text="I'm Slider"
+            android:text="Darbar Chowkdi"
             android:textColor="@color/white"
             android:textSize="20dp"
             sothree:layout_constraintBottom_toBottomOf="@+id/textView7"
@@ -129,34 +130,60 @@
             sothree:layout_constraintTop_toTopOf="@+id/distance_tv" />
 
 
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="12dp"
+
+            android:src="@drawable/stops_icon2"
+            sothree:layout_constraintStart_toStartOf="@+id/recyclerView_routes"
+            sothree:layout_constraintTop_toBottomOf="@+id/time_tv_heading">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/stops_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/product_sans_bold"
+            android:text="Stops:"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            sothree:layout_constraintBottom_toBottomOf="@+id/imageView5"
+            sothree:layout_constraintStart_toEndOf="@+id/imageView5"
+            sothree:layout_constraintTop_toTopOf="@+id/imageView5" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_routes"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="30sp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="16dp"
+            android:paddingBottom="20dp"
             sothree:layout_constraintEnd_toEndOf="parent"
             sothree:layout_constraintHorizontal_bias="1.0"
             sothree:layout_constraintStart_toStartOf="parent"
-            sothree:layout_constraintTop_toBottomOf="@+id/appCompatButton" />
+            sothree:layout_constraintTop_toBottomOf="@+id/stops_tv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <!--
-    <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:gravity="center"
-          android:text="I'm Slider"
-          android:layout_marginTop="30dp"
-          android:textSize="20dp"
-          android:textColor="@color/white"
-          sothree:layout_constraintEnd_toEndOf="parent"
-          sothree:layout_constraintStart_toStartOf="parent"
-          sothree:layout_constraintTop_toTopOf="parent">
+        <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:text="I'm Slider"
+              android:layout_marginTop="30dp"
+              android:textSize="20dp"
+              android:textColor="@color/white"
+              sothree:layout_constraintEnd_toEndOf="parent"
+              sothree:layout_constraintStart_toStartOf="parent"
+              sothree:layout_constraintTop_toTopOf="parent">
 
-      </TextView>  -->
+          </TextView>   -->
 
 
 
