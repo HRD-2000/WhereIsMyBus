@@ -450,13 +450,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private String getUrl(LatLng origin, LatLng dest, String directionMode) {
+    private String getUrl(LatLng origin, LatLng dest, String wayPoints, String directionMode) {
         // Origin of route
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
         // Destination of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
         //waypoints
-        String way_points = "waypoints=22.270184,73.196796|22.272672,73.187759";
+        String way_points = "waypoints=" + wayPoints;
         // Mode
         String mode = "mode=" + directionMode;
         // Building the parameters to the web service
@@ -556,7 +556,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             adapter = new StopsAdapter(MapsActivity.this,model);
             recyclerView.setAdapter(adapter);
 
-            wayPoints();
+            wayPoints = wayPoints();
+
+            LatLng Start_location = new LatLng(Double.parseDouble(model.get(0).getLatitude()),Double.parseDouble(model.get(0).getLongitude()));
+            MarkerOptions starting_location = new MarkerOptions().position(Start_location);
+
+            LatLng Destination_location = new LatLng(Double.parseDouble(model.get(model.size()-1).getLatitude()),Double.parseDouble(model.get(model.size()-1).getLongitude()));
+            MarkerOptions destination_location = new MarkerOptions().position(Destination_location);
+
+            new FetchURL(MapsActivity.this).execute(getUrl(starting_location.getPosition(), destination_location.getPosition(),wayPoints,"driving"),"driving");
         }
 
     }
@@ -567,7 +575,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Integer im;
 
-        for ( im = model.size()-1; im >= 1 ; im--) {
+        for ( im = model.size()-2; im >= 1 ; im--) {
 
             if(im == 1){
                 wayPoints = wayPoints + ""+model.get(im).getLatitude()+","+model.get(im).getLongitude();
