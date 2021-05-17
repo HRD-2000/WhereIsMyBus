@@ -1,5 +1,7 @@
 package com.hrd.whereismybus.distancematrixhelper;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
@@ -24,6 +26,8 @@ public class GetDistancesData extends AsyncTask<Object,String,String> {
     String googleDistanceData;
     String duration,distance;
     LatLng latLng;
+
+    Context context;
 
     TextView distance_tv,duration_tv;
 
@@ -56,9 +60,11 @@ public class GetDistancesData extends AsyncTask<Object,String,String> {
 
         Log.d("test", "distance :"+distance+"\n duration :"+duration);
 
-        //distance_tv = (TextView) distance_tv.findViewById(R.id.distance_tv);
-        //duration_tv = (TextView) duration_tv.findViewById(R.id.time_tv);
+        distance_tv = ((Activity)context).findViewById(R.id.distance_tv);
+        duration_tv = ((Activity)context).findViewById(R.id.time_tv);
 
+        distance_tv.setText(distance);
+        duration_tv.setText(duration);
 
     }
 

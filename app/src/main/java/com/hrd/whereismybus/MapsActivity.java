@@ -175,7 +175,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         chechInternet();
 
-  /*      floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        /*      floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ReciveLocationFromFirebase();
@@ -319,6 +319,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
               //  markerOptions.rotation(30);
             //}
         }*/
+
         Location location = new Location(String.valueOf(latLng));
         
         //markerOptions.rotation(location.getBearing());
@@ -345,7 +346,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         return googleDistanceUrl.toString();
     }
-
 
     public double calculate_bearing(LatLng previous_latlong, LatLng current_latlong){
        /* LatLng start = new LatLng(22.273225, 73.182623 );
@@ -381,7 +381,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
 
-        getDistanceUrl(latLng.latitude,latLng.longitude,Double.parseDouble(model.get(model.size()-1).getLatitude()),Double.parseDouble(model.get(model.size()-1).getLongitude()));
+        new DistanceMatrix(mMap,latLng.latitude,latLng.longitude,Double.parseDouble(model.get(model.size()-1).getLatitude()),Double.parseDouble(model.get(model.size()-1).getLongitude()));
+
+       // getDistanceUrl(latLng.latitude,latLng.longitude,Double.parseDouble(model.get(model.size()-1).getLatitude()),Double.parseDouble(model.get(model.size()-1).getLongitude()));
     }
 
     @Override

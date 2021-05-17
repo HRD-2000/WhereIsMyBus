@@ -1,5 +1,7 @@
 package com.hrd.whereismybus;
 
+import android.content.Context;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.hrd.whereismybus.distancematrixhelper.GetDistancesData;
@@ -10,8 +12,6 @@ public class DistanceMatrix {
     double startLat,startLng,endLat,endLng;
     Object[] dataTransfer;
     String url;
-
-
 
     public DistanceMatrix(GoogleMap mMap, double startLat, double startLng, double endLat, double endLng) {
         this.mMap = mMap;
@@ -32,7 +32,6 @@ public class DistanceMatrix {
     }
 
     private String getDistanceUrl(double startLat,double startLng,double endLat,double endLng) {
-
 
         StringBuilder googleDistanceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/distancematrix/json?");
         googleDistanceUrl.append("origins="+startLat+","+startLng);
