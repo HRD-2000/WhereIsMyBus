@@ -566,7 +566,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         for ( im = model.size()-1; im <= 1 ; im--) {
 
-            Log.v("Model_size","For loop call "+i);
+            Log.v("Model_size","For loop call "+im);
 
             if(im != 1){
                 wayPoints = wayPoints + ""+model.get(im).getLatitude()+","+model.get(im).getLongitude();
